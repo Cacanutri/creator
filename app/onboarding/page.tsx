@@ -91,7 +91,7 @@ export default function OnboardingPage() {
             className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4 text-left hover:bg-zinc-900/50"
           >
             <div className="font-semibold">Sou Creator</div>
-            <div className="mt-1 text-sm text-zinc-300">Envia propostas e entrega campanhas.</div>
+            <div className="mt-1 text-sm text-zinc-300">Envia propostas e entrega parcerias.</div>
           </button>
 
           <button
@@ -99,7 +99,7 @@ export default function OnboardingPage() {
             className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4 text-left hover:bg-zinc-900/50"
           >
             <div className="font-semibold">Sou Marca</div>
-            <div className="mt-1 text-sm text-zinc-300">Cria campanhas e aprova entregas.</div>
+            <div className="mt-1 text-sm text-zinc-300">Cria parcerias e aprova entregas.</div>
           </button>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 export const metadata = {
   title: "CreatorAds Hub",
-  description: "MVP de campanhas entre creators e marcas",
+  description: "MVP de parcerias entre creators e marcas",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

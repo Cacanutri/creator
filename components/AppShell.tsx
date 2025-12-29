@@ -31,7 +31,7 @@ export default function AppShell({ userEmail, role, children }: Props) {
           { href: "/dashboard/brand", label: "Painel", icon: "home" },
           { href: "/vitrine", label: "Vitrine", icon: "grid" },
           { href: "/dashboard/brand/inquiries", label: "Pedidos de proposta", icon: "inbox" },
-          { href: "/dashboard/brand/campaigns", label: "Campanhas", icon: "flag" },
+          { href: "/dashboard/brand/partnerships", label: "Parcerias", icon: "flag" },
           { href: "/dashboard/settings", label: "Configuracoes", icon: "settings" },
         ]
       : role === "creator"
@@ -39,7 +39,7 @@ export default function AppShell({ userEmail, role, children }: Props) {
           { href: "/dashboard/creator", label: "Painel", icon: "home" },
           { href: "/dashboard/creator/offers", label: "Minhas ofertas", icon: "tag" },
           { href: "/dashboard/creator/inquiries", label: "Pedidos de proposta", icon: "inbox" },
-          { href: "/dashboard/creator/campaigns", label: "Campanhas", icon: "flag" },
+          { href: "/dashboard/creator/partnerships", label: "Parcerias", icon: "flag" },
           { href: "/dashboard/settings", label: "Configuracoes", icon: "settings" },
         ]
       : [

@@ -36,7 +36,7 @@ export default async function BrandInquiriesPage() {
       </div>
 
       <div className="mt-4">
-        <InquiryInbox inquiries={normalized} role="brand" />
+        <InquiryInbox inquiries={normalized} role="brand" enableCreatePartnership />
       </div>
     </div>
   );

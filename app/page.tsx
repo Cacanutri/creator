@@ -11,7 +11,7 @@ export default function Home() {
         <Card className="p-6 md:p-10">
           <Badge variant="verified">Plataforma oficial</Badge>
           <h1 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">
-            Conecte Criadores e Patrocinadores em campanhas sob medida.
+            Conecte Criadores e Patrocinadores em parcerias sob medida.
           </h1>
           <p className="mt-3 max-w-2xl text-sm text-zinc-300">
             Criadores publicam ofertas. Marcas filtram, solicitam proposta e negociam direto no painel.
@@ -63,7 +63,7 @@ export default function Home() {
               </li>
               <li className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-                Nicho e localizacao para campanhas locais.
+                Nicho e localizacao para parcerias locais.
               </li>
               <li className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />

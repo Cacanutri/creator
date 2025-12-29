@@ -6,6 +6,9 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import InquiryActions from "@/components/InquiryActions";
+import { supabaseBrowser } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+import { CampaignType, getDefaultCompensation } from "@/lib/domain/partnership";
 
 type Inquiry = {
   id: string;
@@ -29,6 +32,7 @@ type Inquiry = {
 type Props = {
   inquiries: Inquiry[];
   role: "creator" | "brand";
+  enableCreatePartnership?: boolean;
 };
 
 const tabs = [
@@ -38,8 +42,12 @@ const tabs = [
   { id: "rejected", label: "Rejeitados" },
 ];
 
-export default function InquiryInbox({ inquiries, role }: Props) {
+export default function InquiryInbox({ inquiries, role, enableCreatePartnership }: Props) {
   const [activeTab, setActiveTab] = useState("all");
+  const supabase = supabaseBrowser();
+  const router = useRouter();
+  const [creatingId, setCreatingId] = useState<string | null>(null);
+  const [createError, setCreateError] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     return inquiries.filter((inq) => {
@@ -92,6 +100,8 @@ export default function InquiryInbox({ inquiries, role }: Props) {
             ? "muted"
             : "status";
           const location = [inq.offer?.city, inq.offer?.state].filter(Boolean).join(" - ");
+          const canCreatePartnership =
+            enableCreatePartnership && role === "brand" && isAccepted && Boolean(inq.creator_id);
 
           return (
             <Card key={inq.id} interactive>
@@ -125,7 +135,72 @@ export default function InquiryInbox({ inquiries, role }: Props) {
 
               <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                 <StatusTimeline status={normalized} />
-                {role === "creator" && <InquiryActions inquiryId={inq.id} />}
+                <div className="flex flex-wrap gap-2">
+                  {role === "creator" && <InquiryActions inquiryId={inq.id} />}
+                  {canCreatePartnership && (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={async () => {
+                        setCreateError(null);
+                        setCreatingId(inq.id);
+                        const { data: userData } = await supabase.auth.getUser();
+                        const user = userData.user;
+                        if (!user) {
+                          setCreatingId(null);
+                          setCreateError("Voce precisa estar logado.");
+                          return;
+                        }
+
+                        const platform = inq.offer?.platform?.toLowerCase() ?? "tiktok";
+                        const type: CampaignType =
+                          platform === "tiktok" ? "TIKTOK_SHOP_AFFILIATE" : "SPONSORED_MENTION";
+
+                        let deliverables: string[] = [];
+                        if (inq.offer?.id) {
+                          const { data: items } = await supabase
+                            .from("offer_items")
+                            .select("type,quantity,requirement")
+                            .eq("offer_id", inq.offer.id);
+                          deliverables =
+                            items?.map((item) => {
+                              const qty = item.quantity ? `${item.quantity}x ` : "";
+                              const req = item.requirement ? ` - ${item.requirement}` : "";
+                              return `${qty}${item.type ?? "entregavel"}${req}`;
+                            }) ?? [];
+                        }
+
+                        const { data, error } = await supabase
+                          .from("campaigns")
+                          .insert({
+                            brand_id: user.id,
+                            creator_id: inq.creator_id,
+                            inquiry_id: inq.id,
+                            campaign_type: type,
+                            compensation_model: getDefaultCompensation(type),
+                            platform,
+                            status: "draft",
+                            deliverables: deliverables.length ? deliverables : null,
+                          })
+                          .select("id")
+                          .single();
+
+                        setCreatingId(null);
+
+                        if (error || !data) {
+                          setCreateError(error?.message ?? "Erro ao criar parceria.");
+                          return;
+                        }
+
+                        router.push(`/partnerships/${data.id}?edit=1`);
+                        router.refresh();
+                      }}
+                      disabled={creatingId === inq.id}
+                    >
+                      {creatingId === inq.id ? "Criando..." : "Criar parceria"}
+                    </Button>
+                  )}
+                </div>
               </div>
             </Card>
           );
@@ -136,6 +211,7 @@ export default function InquiryInbox({ inquiries, role }: Props) {
             <div className="text-sm text-zinc-300">Nenhum pedido encontrado.</div>
           </Card>
         )}
+        {createError && <div className="text-sm text-red-300">{createError}</div>}
       </div>
     </div>
   );
