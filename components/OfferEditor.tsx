@@ -3,6 +3,11 @@
 import { useMemo, useState } from "react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import Button from "@/components/ui/Button";
+import Card, { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+import Toast from "@/components/ui/Toast";
 
 export type OfferItemDraft = {
   id?: string;
@@ -44,6 +49,7 @@ export default function OfferEditor({ mode, offerId, initialOffer, initialItems 
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ title?: string; price?: string }>({});
 
   const baseOffer: OfferDraft = useMemo(
     () => ({
@@ -104,17 +110,20 @@ export default function OfferEditor({ mode, offerId, initialOffer, initialItems 
   async function save() {
     setErr(null);
     setOk(null);
+    setFieldErrors({});
     setLoading(true);
 
     if (!offer.title.trim()) {
       setLoading(false);
-      return setErr("Informe um título.");
+      setFieldErrors({ title: "Informe um titulo." });
+      return;
     }
 
     const priceValue = offer.price_from.trim() ? Number(offer.price_from.replace(",", ".")) : null;
     if (priceValue !== null && Number.isNaN(priceValue)) {
       setLoading(false);
-      return setErr("Preço inválido.");
+      setFieldErrors({ price: "Preco invalido." });
+      return;
     }
 
     const hasLat = offer.lat.trim().length > 0;
@@ -129,7 +138,7 @@ export default function OfferEditor({ mode, offerId, initialOffer, initialItems 
 
     if ((hasLat && Number.isNaN(latValue)) || (hasLng && Number.isNaN(lngValue))) {
       setLoading(false);
-      return setErr("Latitude/longitude inválidas.");
+      return setErr("Latitude/longitude invalidas.");
     }
 
     const payload = {
@@ -193,7 +202,7 @@ export default function OfferEditor({ mode, offerId, initialOffer, initialItems 
 
     if (!offerId) {
       setLoading(false);
-      return setErr("Offer ID inválido.");
+      return setErr("Offer ID invalido.");
     }
 
     const { error: updateError } = await supabase.from("creator_offers").update(payload).eq("id", offerId);
@@ -261,57 +270,73 @@ export default function OfferEditor({ mode, offerId, initialOffer, initialItems 
   }
 
   return (
-    <div className="grid gap-4">
-      <div className="grid gap-3">
-        <input
-          className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-          placeholder="Título"
-          value={offer.title}
-          onChange={(e) => updateOffer({ title: e.target.value })}
-        />
-        <textarea
-          className="min-h-24 rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-          placeholder="Descrição"
-          value={offer.description}
-          onChange={(e) => updateOffer({ description: e.target.value })}
-        />
+    <div className="grid gap-5">
+      <Card>
+        <CardHeader>
+          <CardTitle>Basico</CardTitle>
+          <CardDescription>Informacoes principais da sua oferta.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-3">
+          <label className="grid gap-1 text-xs text-zinc-400">
+            Titulo
+            <Input value={offer.title} onChange={(e) => updateOffer({ title: e.target.value })} />
+            {fieldErrors.title && <span className="text-xs text-red-300">{fieldErrors.title}</span>}
+          </label>
+          <label className="grid gap-1 text-xs text-zinc-400">
+            Descricao
+            <Textarea
+              rows={4}
+              value={offer.description}
+              onChange={(e) => updateOffer({ description: e.target.value })}
+            />
+          </label>
+        </CardContent>
+      </Card>
 
-        <div className="grid gap-3 sm:grid-cols-3">
-          <input
-            className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-            placeholder="Platform"
-            value={offer.platform}
-            onChange={(e) => updateOffer({ platform: e.target.value })}
-          />
-          <input
-            className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-            placeholder="Nicho"
-            value={offer.niche}
-            onChange={(e) => updateOffer({ niche: e.target.value })}
-          />
-          <input
-            className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-            placeholder="Idioma"
-            value={offer.language}
-            onChange={(e) => updateOffer({ language: e.target.value })}
-          />
-        </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Segmento</CardTitle>
+          <CardDescription>Defina plataforma e nicho para facilitar a busca.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-3 sm:grid-cols-3">
+          <label className="grid gap-1 text-xs text-zinc-400">
+            Platform
+            <Input value={offer.platform} onChange={(e) => updateOffer({ platform: e.target.value })} />
+          </label>
+          <label className="grid gap-1 text-xs text-zinc-400">
+            Nicho
+            <Input value={offer.niche} onChange={(e) => updateOffer({ niche: e.target.value })} />
+          </label>
+          <label className="grid gap-1 text-xs text-zinc-400">
+            Idioma
+            <Input value={offer.language} onChange={(e) => updateOffer({ language: e.target.value })} />
+          </label>
+        </CardContent>
+      </Card>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          <input
-            className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-            placeholder="Preço base (ex.: 1500)"
-            value={offer.price_from}
-            onChange={(e) => updateOffer({ price_from: e.target.value })}
-          />
-          <div className="flex items-center gap-4 text-sm text-zinc-300">
+      <Card>
+        <CardHeader>
+          <CardTitle>Preco e status</CardTitle>
+          <CardDescription>Controle visibilidade e disponibilidade da oferta.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-3 sm:grid-cols-[1fr_auto]">
+          <label className="grid gap-1 text-xs text-zinc-400">
+            Preco base
+            <Input
+              placeholder="Ex.: 1500"
+              value={offer.price_from}
+              onChange={(e) => updateOffer({ price_from: e.target.value })}
+            />
+            {fieldErrors.price && <span className="text-xs text-red-300">{fieldErrors.price}</span>}
+          </label>
+          <div className="flex items-center gap-3 text-sm text-zinc-300">
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={offer.is_public}
                 onChange={(e) => updateOffer({ is_public: e.target.checked })}
               />
-              Pública
+              Publica
             </label>
             <label className="flex items-center gap-2">
               <input
@@ -322,129 +347,99 @@ export default function OfferEditor({ mode, offerId, initialOffer, initialItems 
               Ativa
             </label>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-3">
-          <div className="text-sm font-semibold text-zinc-200">Localização</div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-3">
-            <input
-              className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-              placeholder="Cidade"
-              value={offer.city}
-              onChange={(e) => updateOffer({ city: e.target.value })}
-            />
-            <input
-              className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-              placeholder="Estado"
-              value={offer.state}
-              onChange={(e) => updateOffer({ state: e.target.value })}
-            />
-            <input
-              className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-              placeholder="País"
-              value={offer.country}
-              onChange={(e) => updateOffer({ country: e.target.value })}
-            />
-          </div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <input
-              className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-              placeholder="Latitude (opcional)"
-              value={offer.lat}
-              onChange={(e) => updateOffer({ lat: e.target.value })}
-            />
-            <input
-              className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-              placeholder="Longitude (opcional)"
-              value={offer.lng}
-              onChange={(e) => updateOffer({ lng: e.target.value })}
-            />
-          </div>
-        </div>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Localizacao</CardTitle>
+          <CardDescription>Ajude marcas a encontrar creators na sua regiao.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-3 sm:grid-cols-3">
+          <label className="grid gap-1 text-xs text-zinc-400">
+            Cidade
+            <Input value={offer.city} onChange={(e) => updateOffer({ city: e.target.value })} />
+          </label>
+          <label className="grid gap-1 text-xs text-zinc-400">
+            Estado/UF
+            <Input value={offer.state} onChange={(e) => updateOffer({ state: e.target.value })} />
+          </label>
+          <label className="grid gap-1 text-xs text-zinc-400">
+            Pais
+            <Input value={offer.country} onChange={(e) => updateOffer({ country: e.target.value })} />
+          </label>
+        </CardContent>
+      </Card>
 
-      <div>
-        <h2 className="text-sm font-semibold text-zinc-200">Itens</h2>
-        <div className="mt-3 grid gap-3">
+      <Card>
+        <CardHeader>
+          <CardTitle>Itens do pacote</CardTitle>
+          <CardDescription>Liste entregaveis e requisitos da oferta.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-3">
           {items.map((item, index) => (
-            <div key={item.id ?? index} className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-3">
+            <div key={item.id ?? index} className="rounded-xl border border-zinc-800/70 bg-zinc-900/30 p-3">
               <div className="grid gap-3 sm:grid-cols-3">
-                <input
-                  className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-                  placeholder="Type (ex.: video_review)"
-                  value={item.type}
-                  onChange={(e) => updateItem(index, { type: e.target.value })}
-                />
-                <input
-                  className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-                  placeholder="Quantidade"
-                  type="number"
-                  value={item.quantity}
-                  onChange={(e) => updateItem(index, { quantity: Number(e.target.value) || 1 })}
-                />
-                <button
-                  onClick={() => removeItem(index)}
-                  className="rounded-lg border border-zinc-700 px-3 py-2 text-xs hover:bg-zinc-800/60"
-                >
-                  Remover
-                </button>
+                <label className="grid gap-1 text-xs text-zinc-400">
+                  Tipo
+                  <Input
+                    placeholder="Ex.: video_review"
+                    value={item.type}
+                    onChange={(e) => updateItem(index, { type: e.target.value })}
+                  />
+                </label>
+                <label className="grid gap-1 text-xs text-zinc-400">
+                  Quantidade
+                  <Input
+                    type="number"
+                    value={item.quantity}
+                    onChange={(e) => updateItem(index, { quantity: Number(e.target.value) || 1 })}
+                  />
+                </label>
+                <div className="flex items-end">
+                  <Button variant="ghost" size="sm" onClick={() => removeItem(index)}>
+                    Remover
+                  </Button>
+                </div>
               </div>
-              <input
-                className="mt-3 w-full rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-                placeholder="Requirement"
-                value={item.requirement}
-                onChange={(e) => updateItem(index, { requirement: e.target.value })}
-              />
+              <label className="mt-3 grid gap-1 text-xs text-zinc-400">
+                Requisito
+                <Input
+                  value={item.requirement}
+                  onChange={(e) => updateItem(index, { requirement: e.target.value })}
+                />
+              </label>
             </div>
           ))}
-        </div>
 
-        <button
-          onClick={addItem}
-          className="mt-3 rounded-lg border border-zinc-700 px-3 py-2 text-sm hover:bg-zinc-800/60"
-        >
-          + Adicionar item
-        </button>
-      </div>
+          <Button variant="secondary" size="sm" onClick={addItem}>
+            + Adicionar item
+          </Button>
+        </CardContent>
+      </Card>
 
       <div className="flex flex-wrap gap-2">
-        <button
-          onClick={save}
-          disabled={loading}
-          className="rounded-lg bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-white disabled:opacity-60"
-        >
+        <Button onClick={save} disabled={loading}>
           {loading ? "Salvando..." : "Salvar"}
-        </button>
+        </Button>
 
         {mode === "edit" && (
           <>
-            <button
-              onClick={togglePublic}
-              disabled={loading}
-              className="rounded-lg border border-zinc-700 px-3 py-2 text-sm hover:bg-zinc-800/60 disabled:opacity-60"
-            >
+            <Button onClick={togglePublic} disabled={loading} variant="secondary">
               {offer.is_public ? "Despublicar" : "Publicar"}
-            </button>
-            <button
-              onClick={toggleActive}
-              disabled={loading}
-              className="rounded-lg border border-zinc-700 px-3 py-2 text-sm hover:bg-zinc-800/60 disabled:opacity-60"
-            >
+            </Button>
+            <Button onClick={toggleActive} disabled={loading} variant="ghost">
               {offer.is_active ? "Desativar" : "Ativar"}
-            </button>
-            <button
-              onClick={removeOffer}
-              disabled={loading}
-              className="rounded-lg border border-red-700/60 px-3 py-2 text-sm text-red-300 hover:bg-red-950/30 disabled:opacity-60"
-            >
+            </Button>
+            <Button onClick={removeOffer} disabled={loading} variant="danger">
               Excluir oferta
-            </button>
+            </Button>
           </>
         )}
       </div>
 
-      {err && <div className="text-sm text-red-400">{err}</div>}
-      {ok && <div className="text-sm text-emerald-300">{ok}</div>}
+      {err && <Toast variant="danger">{err}</Toast>}
+      {ok && <Toast variant="success">{ok}</Toast>}
     </div>
   );
 }

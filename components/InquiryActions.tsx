@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import Button from "@/components/ui/Button";
+import Toast from "@/components/ui/Toast";
 
 type Status = "accepted" | "rejected" | "closed";
 
@@ -26,28 +28,30 @@ export default function InquiryActions({ inquiryId }: { inquiryId: string }) {
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <button
+      <Button
         onClick={() => updateStatus("accepted")}
         disabled={loading !== null}
-        className="rounded-lg bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-900 hover:bg-white disabled:opacity-60"
+        size="sm"
       >
         {loading === "accepted" ? "..." : "Aceitar"}
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => updateStatus("rejected")}
         disabled={loading !== null}
-        className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs hover:bg-zinc-800/60 disabled:opacity-60"
+        size="sm"
+        variant="secondary"
       >
         {loading === "rejected" ? "..." : "Rejeitar"}
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => updateStatus("closed")}
         disabled={loading !== null}
-        className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs hover:bg-zinc-800/60 disabled:opacity-60"
+        size="sm"
+        variant="ghost"
       >
         {loading === "closed" ? "..." : "Fechar"}
-      </button>
-      {err && <div className="text-xs text-red-400">{err}</div>}
+      </Button>
+      {err && <Toast variant="danger">{err}</Toast>}
     </div>
   );
 }

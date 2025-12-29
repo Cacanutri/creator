@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
+import Toast from "@/components/ui/Toast";
 
 export default function OfferInquiryForm({ offerId }: { offerId: string }) {
   const supabase = supabaseBrowser();
@@ -12,10 +17,12 @@ export default function OfferInquiryForm({ offerId }: { offerId: string }) {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
+  const [budgetError, setBudgetError] = useState<string | null>(null);
 
   async function submit() {
     setErr(null);
     setOk(null);
+    setBudgetError(null);
     setLoading(true);
 
     const { data: userData } = await supabase.auth.getUser();
@@ -43,8 +50,9 @@ export default function OfferInquiryForm({ offerId }: { offerId: string }) {
 
     const budgetValue = budget.trim() ? Number(budget.replace(",", ".")) : null;
     if (budgetValue !== null && Number.isNaN(budgetValue)) {
+      setBudgetError("Informe um budget valido.");
       setLoading(false);
-      return setErr("Informe um budget válido.");
+      return;
     }
 
     const { error } = await supabase.from("offer_inquiries").insert({
@@ -57,35 +65,41 @@ export default function OfferInquiryForm({ offerId }: { offerId: string }) {
 
     if (error) return setErr(error.message);
 
-    setOk("Solicitação enviada.");
+    setOk("Solicitacao enviada. Propostas ficam registradas no painel.");
     setBudget("");
     setMessage("");
     router.refresh();
   }
 
   return (
-    <div className="mt-3 grid gap-3">
-      <input
-        className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-        placeholder="Budget estimado (opcional)"
-        value={budget}
-        onChange={(e) => setBudget(e.target.value)}
-      />
-      <textarea
-        className="min-h-20 rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-        placeholder="Mensagem (opcional)"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button
-        onClick={submit}
-        disabled={loading}
-        className="rounded-lg bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-white disabled:opacity-60"
-      >
-        {loading ? "Enviando..." : "Solicitar proposta"}
-      </button>
-      {err && <div className="text-sm text-red-400">{err}</div>}
-      {ok && <div className="text-sm text-emerald-300">{ok}</div>}
-    </div>
+    <Card className="mt-4">
+      <div className="grid gap-3">
+        <label className="grid gap-1 text-xs text-zinc-400">
+          Budget (opcional)
+          <Input
+            placeholder="Ex.: 1500"
+            value={budget}
+            onChange={(e) => setBudget(e.target.value)}
+          />
+          {budgetError && <span className="text-xs text-red-300">{budgetError}</span>}
+        </label>
+        <label className="grid gap-1 text-xs text-zinc-400">
+          Mensagem (opcional)
+          <Textarea
+            rows={4}
+            placeholder="Conte rapidamente sobre a sua campanha."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </label>
+
+        <Button onClick={submit} disabled={loading}>
+          {loading ? "Enviando..." : "Solicitar proposta"}
+        </Button>
+
+        {err && <Toast variant="danger">{err}</Toast>}
+        {ok && <Toast variant="success">{ok}</Toast>}
+      </div>
+    </Card>
   );
 }

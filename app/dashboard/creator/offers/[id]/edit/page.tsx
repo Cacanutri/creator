@@ -26,11 +26,11 @@ export default async function EditOfferPage({ params }: { params: { id: string }
 
   return (
     <div>
-      <h1 className="text-xl font-semibold">Editar oferta</h1>
-      <p className="mt-1 text-sm text-zinc-300">Atualize informações e itens da sua oferta.</p>
-      <div className="mt-4">
-        <OfferEditor mode="edit" offerId={offer.id} initialOffer={offer} initialItems={items ?? []} />
+      <div className="mb-4">
+        <h1 className="text-xl font-semibold">Editar oferta</h1>
+        <p className="mt-1 text-sm text-zinc-300">Atualize informacoes e itens da sua oferta.</p>
       </div>
+      <OfferEditor mode="edit" offerId={offer.id} initialOffer={offer} initialItems={items ?? []} />
     </div>
   );
 }

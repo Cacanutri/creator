@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { supabaseServer } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import Avatar from "@/components/ui/Avatar";
 
 export default async function CreatorOffersPage() {
   const supabase = supabaseServer();
@@ -19,42 +23,47 @@ export default async function CreatorOffersPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-semibold">Minhas ofertas</h1>
-          <p className="mt-1 text-sm text-zinc-300">Gerencie suas ofertas públicas ou privadas.</p>
+          <p className="mt-1 text-sm text-zinc-300">Gerencie ofertas publicas e privadas.</p>
         </div>
-        <Link
-          href="/dashboard/creator/offers/new"
-          className="rounded-lg bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-900 hover:bg-white"
-        >
-          Nova oferta
+        <Link href="/dashboard/creator/offers/new">
+          <Button>Nova oferta</Button>
         </Link>
       </div>
 
       <div className="mt-4 grid gap-3">
         {(offers ?? []).map((offer) => (
-          <Link
-            key={offer.id}
-            href={`/dashboard/creator/offers/${offer.id}/edit`}
-            className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4 hover:bg-zinc-900/50"
-          >
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <div className="font-medium">{offer.title}</div>
-                <div className="text-xs text-zinc-400">
-                  {offer.platform || "-"} • {offer.niche || "-"} • {offer.language || "-"}
+          <Link key={offer.id} href={`/dashboard/creator/offers/${offer.id}/edit`}>
+            <Card interactive>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <Avatar name={offer.title} />
+                  <div>
+                    <div className="font-medium">{offer.title}</div>
+                    <div className="text-xs text-zinc-400">
+                      {offer.platform || "-"} {"•"} {offer.niche || "-"} {"•"} {offer.language || "-"}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 text-xs">
+                  <Badge variant={offer.is_public ? "success" : "muted"}>
+                    {offer.is_public ? "Publica" : "Privada"}
+                  </Badge>
+                  <Badge variant={offer.is_active ? "success" : "danger"}>
+                    {offer.is_active ? "Ativa" : "Inativa"}
+                  </Badge>
                 </div>
               </div>
-              <div className="text-xs text-zinc-300">
-                {offer.is_public ? "PUBLICA" : "PRIVADA"} • {offer.is_active ? "ATIVA" : "INATIVA"}
+              <div className="mt-3 text-sm text-zinc-300">
+                A partir de {offer.price_from ? `R$ ${Number(offer.price_from).toFixed(2)}` : "sob consulta"}
               </div>
-            </div>
-            <div className="mt-2 text-sm text-zinc-300">
-              A partir de {offer.price_from ? `R$ ${Number(offer.price_from).toFixed(2)}` : "sob consulta"}
-            </div>
+            </Card>
           </Link>
         ))}
 
         {(!offers || offers.length === 0) && (
-          <div className="text-sm text-zinc-300">Você ainda não criou ofertas.</div>
+          <Card>
+            <div className="text-sm text-zinc-300">Voce ainda nao criou ofertas.</div>
+          </Card>
         )}
       </div>
     </div>

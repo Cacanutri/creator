@@ -1,9 +1,15 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabase/client";
 import { useState } from "react";
+import Avatar from "@/components/ui/Avatar";
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import Skeleton from "@/components/ui/Skeleton";
 
 type Props = {
   userEmail: string | null;
@@ -19,23 +25,24 @@ export default function AppShell({ userEmail, role, children }: Props) {
   const links =
     role === "brand"
       ? [
-          { href: "/vitrine", label: "Vitrine" },
-          { href: "/dashboard/brand", label: "Painel" },
-          { href: "/dashboard/brand/campaigns", label: "Campanhas" },
-          { href: "/dashboard/brand/agreements", label: "Acordos" },
-          { href: "/dashboard/brand/inquiries", label: "Pedidos enviados" },
+          { href: "/dashboard/brand", label: "Painel", icon: "home" },
+          { href: "/vitrine", label: "Vitrine", icon: "grid" },
+          { href: "/dashboard/brand/inquiries", label: "Pedidos enviados", icon: "inbox" },
+          { href: "/dashboard/brand/campaigns", label: "Campanhas", icon: "flag" },
         ]
       : role === "creator"
       ? [
-          { href: "/dashboard/creator", label: "Painel" },
-          { href: "/dashboard/creator/campaigns", label: "Campanhas abertas" },
-          { href: "/dashboard/creator/agreements", label: "Meus acordos" },
-          { href: "/dashboard/creator/offers", label: "Minhas ofertas" },
-          { href: "/dashboard/creator/inquiries", label: "Pedidos recebidos" },
+          { href: "/dashboard/creator", label: "Painel", icon: "home" },
+          { href: "/dashboard/creator/offers", label: "Minhas ofertas", icon: "tag" },
+          { href: "/dashboard/creator/inquiries", label: "Pedidos recebidos", icon: "inbox" },
+          { href: "/dashboard/creator/campaigns", label: "Campanhas", icon: "flag" },
         ]
-      : [{ href: "/dashboard/admin", label: "Admin" }];
+      : [{ href: "/dashboard/admin", label: "Admin", icon: "shield" }];
+
+  const mobileLinks = links.slice(0, 4);
 
   async function logout() {
+    if (!window.confirm("Deseja sair?")) return;
     setLoading(true);
     await supabase.auth.signOut();
     setLoading(false);
@@ -44,48 +51,125 @@ export default function AppShell({ userEmail, role, children }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-50">
-      <header className="border-b border-zinc-800 bg-zinc-950/60 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <Link href="/dashboard" className="font-semibold">
-            CreatorAds Hub
+    <div className="min-h-screen bg-[var(--bg)] text-zinc-50">
+      <header className="fixed top-0 z-50 w-full border-b border-zinc-800/80 bg-zinc-950/70 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
+          <Link href="/dashboard" className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-900/60 text-sm font-semibold">
+              CA
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-zinc-100">CreatorAds Hub</div>
+              <div className="text-xs text-zinc-400">Creators & Patrocinadores</div>
+            </div>
           </Link>
 
-          <div className="flex items-center gap-3 text-sm text-zinc-300">
-            <span className="hidden sm:inline">{userEmail}</span>
-            <span className="rounded-full border border-zinc-800 px-2 py-0.5 text-xs">
-              {role.toUpperCase()}
-            </span>
-            <button
-              onClick={logout}
-              disabled={loading}
-              className="rounded-md bg-zinc-100 px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-white disabled:opacity-60"
-            >
+          <div className="hidden md:block md:w-72">
+            <Input placeholder="Pesquisar creators, cidades..." aria-label="Pesquisar" />
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Avatar name={userEmail ?? role} />
+            <div className="hidden sm:flex flex-col text-xs text-zinc-400">
+              {userEmail ? (
+                <span className="text-zinc-200">{userEmail}</span>
+              ) : (
+                <Skeleton className="h-3 w-32" />
+              )}
+              <Badge variant="muted">{role.toUpperCase()}</Badge>
+            </div>
+            <Button onClick={logout} disabled={loading} size="sm" variant="secondary">
               {loading ? "Saindo..." : "Sair"}
-            </button>
+            </Button>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-6 md:grid-cols-[220px_1fr]">
-        <aside className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-3">
-          <nav className="flex flex-col gap-1">
-            {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="rounded-lg px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-800/60"
-              >
-                {l.label}
-              </Link>
-            ))}
-          </nav>
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pb-24 pt-24 md:grid-cols-[240px_1fr] md:pb-10">
+        <aside className="hidden md:block">
+          <Card className="sticky top-24 p-4">
+            <nav className="flex flex-col gap-2">
+              {links.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="group flex items-center gap-3 rounded-xl border border-transparent px-3 py-2 text-sm text-zinc-200 transition hover:border-zinc-800/80 hover:bg-zinc-900/50"
+                >
+                  <NavIcon name={l.icon} />
+                  <span>{l.label}</span>
+                </Link>
+              ))}
+            </nav>
+          </Card>
         </aside>
 
-        <main className="rounded-xl border border-zinc-800 bg-zinc-900/20 p-4 md:p-6">
+        <main className="rounded-2xl border border-zinc-800/70 bg-zinc-900/20 p-4 md:p-6">
           {children}
         </main>
       </div>
+
+      <nav className="fixed bottom-3 left-0 right-0 z-40 mx-auto w-[92%] max-w-md rounded-2xl border border-zinc-800/80 bg-zinc-950/80 px-4 py-2 backdrop-blur md:hidden">
+        <div className="grid grid-cols-4 gap-2 text-xs">
+          {mobileLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="flex flex-col items-center gap-1 rounded-xl px-2 py-1 text-zinc-300 hover:bg-zinc-900/60"
+            >
+              <NavIcon name={link.icon} />
+              <span className="text-[10px]">{link.label}</span>
+            </Link>
+          ))}
+        </div>
+      </nav>
     </div>
+  );
+}
+
+function NavIcon({ name }: { name?: string }) {
+  const base = "h-4 w-4 text-zinc-400";
+  if (name === "grid") {
+    return (
+      <svg viewBox="0 0 24 24" className={base} fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" />
+      </svg>
+    );
+  }
+  if (name === "inbox") {
+    return (
+      <svg viewBox="0 0 24 24" className={base} fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M4 4h16v12H4z" />
+        <path d="M4 16h5l2 3h2l2-3h5" />
+      </svg>
+    );
+  }
+  if (name === "flag") {
+    return (
+      <svg viewBox="0 0 24 24" className={base} fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M5 3v18" />
+        <path d="M5 4h11l-2 4 2 4H5" />
+      </svg>
+    );
+  }
+  if (name === "tag") {
+    return (
+      <svg viewBox="0 0 24 24" className={base} fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M20 12l-8 8-9-9V4h7z" />
+        <circle cx="7.5" cy="7.5" r="1.5" />
+      </svg>
+    );
+  }
+  if (name === "shield") {
+    return (
+      <svg viewBox="0 0 24 24" className={base} fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M12 3l8 4v6c0 5-3.5 7.5-8 8-4.5-.5-8-3-8-8V7z" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" className={base} fill="none" stroke="currentColor" strokeWidth="1.6">
+      <path d="M4 10l8-6 8 6v10H4z" />
+      <path d="M9 20v-6h6v6" />
+    </svg>
   );
 }

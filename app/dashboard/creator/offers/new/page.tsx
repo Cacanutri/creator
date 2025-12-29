@@ -10,11 +10,11 @@ export default async function NewOfferPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold">Nova oferta</h1>
-      <p className="mt-1 text-sm text-zinc-300">Cadastre sua oferta e seus itens.</p>
-      <div className="mt-4">
-        <OfferEditor mode="new" />
+      <div className="mb-4">
+        <h1 className="text-xl font-semibold">Nova oferta</h1>
+        <p className="mt-1 text-sm text-zinc-300">Cadastre sua oferta e seus itens.</p>
       </div>
+      <OfferEditor mode="new" />
     </div>
   );
 }

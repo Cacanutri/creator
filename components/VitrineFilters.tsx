@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { parseCities, parseNumber } from "@/lib/utils/query";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import Input from "@/components/ui/Input";
+import Select from "@/components/ui/Select";
+import Toast from "@/components/ui/Toast";
 
 type Props = {
   platform?: string | null;
@@ -203,7 +208,7 @@ export default function VitrineFilters({
   }
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
+    <Card>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-sm font-semibold text-zinc-200">Filtros</h2>
@@ -212,98 +217,79 @@ export default function VitrineFilters({
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <button
-            onClick={useMyLocation}
-            disabled={geoLoading}
-            className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs hover:bg-zinc-800/60 disabled:opacity-60"
-          >
+          <Button onClick={useMyLocation} disabled={geoLoading} variant="secondary" size="sm">
             {geoLoading ? "Localizando..." : "Perto de mim"}
-          </button>
-          <button
-            onClick={clearFilters}
-            className="rounded-lg border border-zinc-700 px-3 py-1.5 text-xs hover:bg-zinc-800/60"
-          >
+          </Button>
+          <Button onClick={clearFilters} variant="ghost" size="sm">
             Limpar
-          </button>
-          <button
-            onClick={applyFilters}
-            disabled={applyLoading}
-            className="rounded-lg bg-zinc-100 px-3 py-1.5 text-xs font-medium text-zinc-900 hover:bg-white disabled:opacity-60"
-          >
+          </Button>
+          <Button onClick={applyFilters} disabled={applyLoading} size="sm">
             {applyLoading ? "Aplicando..." : "Aplicar filtros"}
-          </button>
+          </Button>
         </div>
       </div>
-
-      {showRadiusWarning && (
-        <div className="mt-3 text-xs text-amber-300">
-          Filtro por raio indisponivel no momento. Usando filtros padrao.
-        </div>
-      )}
-      {geoNotice && <div className="mt-3 text-xs text-emerald-300">{geoNotice}</div>}
-      {geoWarning && <div className="mt-3 text-xs text-amber-300">{geoWarning}</div>}
-      {geoError && <div className="mt-3 text-xs text-red-400">{geoError}</div>}
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <select
-          className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-sm outline-none"
-          value={platformValue}
-          onChange={(e) => setPlatformValue(e.target.value)}
-        >
-          {normalizedPlatformOptions.map((option) => (
-            <option key={option || "all"} value={option}>
-              {option ? option : "Platform"}
-            </option>
-          ))}
-        </select>
-        <input
-          className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-sm outline-none"
-          placeholder="Nicho"
-          value={nicheValue}
-          onChange={(e) => setNicheValue(e.target.value)}
-        />
-        <input
-          className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-sm outline-none"
-          placeholder="Preco maximo"
-          value={maxPriceValue}
-          onChange={(e) => setMaxPriceValue(e.target.value)}
-        />
-        <select
-          className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-sm outline-none"
-          value={countryValue}
-          onChange={(e) => setCountryValue(e.target.value)}
-        >
-          <option value="BR">Pais: BR</option>
-          <option value="ALL">Pais: Todos</option>
-        </select>
-        <input
-          className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-sm uppercase tracking-widest outline-none"
-          placeholder="Estado/UF"
-          value={stateValue}
-          onChange={(e) => setStateValue(e.target.value.toUpperCase())}
-          maxLength={2}
-        />
-        <input
-          className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-sm outline-none"
-          placeholder="Cidades (ex.: Maceio, Recife)"
-          value={citiesValue}
-          onChange={(e) => setCitiesValue(e.target.value)}
-        />
-        <input
-          type="number"
-          min={1}
-          className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-sm outline-none"
-          placeholder="Raio (km)"
-          value={radiusValue}
-          onChange={(e) => setRadiusValue(e.target.value)}
-        />
-        <input
-          className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 text-sm outline-none"
-          placeholder="Cidade para raio (ex.: Maceio - AL)"
-          value={cityRadiusValue}
-          onChange={(e) => setCityRadiusValue(e.target.value)}
-        />
+        <label className="grid gap-1 text-xs text-zinc-400">
+          Platform
+          <Select value={platformValue} onChange={(e) => setPlatformValue(e.target.value)}>
+            {normalizedPlatformOptions.map((option) => (
+              <option key={option || "all"} value={option}>
+                {option ? option : "Todas"}
+              </option>
+            ))}
+          </Select>
+        </label>
+        <label className="grid gap-1 text-xs text-zinc-400">
+          Nicho
+          <Input value={nicheValue} onChange={(e) => setNicheValue(e.target.value)} />
+        </label>
+        <label className="grid gap-1 text-xs text-zinc-400">
+          Preco maximo
+          <Input value={maxPriceValue} onChange={(e) => setMaxPriceValue(e.target.value)} />
+        </label>
+        <label className="grid gap-1 text-xs text-zinc-400">
+          Pais
+          <Select value={countryValue} onChange={(e) => setCountryValue(e.target.value)}>
+            <option value="BR">BR</option>
+            <option value="ALL">Todos</option>
+          </Select>
+        </label>
+        <label className="grid gap-1 text-xs text-zinc-400">
+          Estado/UF
+          <Input
+            value={stateValue}
+            onChange={(e) => setStateValue(e.target.value.toUpperCase())}
+            maxLength={2}
+          />
+        </label>
+        <label className="grid gap-1 text-xs text-zinc-400">
+          Cidades (ex.: Maceio, Recife)
+          <Input value={citiesValue} onChange={(e) => setCitiesValue(e.target.value)} />
+        </label>
+        <label className="grid gap-1 text-xs text-zinc-400">
+          Raio (km)
+          <Input
+            type="number"
+            min={1}
+            value={radiusValue}
+            onChange={(e) => setRadiusValue(e.target.value)}
+          />
+        </label>
+        <label className="grid gap-1 text-xs text-zinc-400">
+          Cidade para raio (ex.: Maceio - AL)
+          <Input value={cityRadiusValue} onChange={(e) => setCityRadiusValue(e.target.value)} />
+        </label>
       </div>
-    </div>
+
+      <div className="mt-4 grid gap-2">
+        {showRadiusWarning && (
+          <Toast variant="danger">Filtro por raio indisponivel no momento. Usando filtros padrao.</Toast>
+        )}
+        {geoNotice && <Toast variant="success">{geoNotice}</Toast>}
+        {geoWarning && <Toast variant="info">{geoWarning}</Toast>}
+        {geoError && <Toast variant="danger">{geoError}</Toast>}
+      </div>
+    </Card>
   );
 }
