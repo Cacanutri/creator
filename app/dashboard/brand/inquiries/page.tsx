@@ -22,13 +22,14 @@ export default async function BrandInquiriesPage() {
 
       <div className="mt-4 grid gap-3">
         {(inquiries ?? []).map((inq) => {
-          const location = [inq.offer?.city, inq.offer?.state].filter(Boolean).join(" - ");
+          const offer = Array.isArray(inq.offer) ? inq.offer[0] : inq.offer;
+          const location = [offer?.city, offer?.state].filter(Boolean).join(" - ");
 
           return (
             <div key={inq.id} className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <div className="text-sm font-medium">{inq.offer?.title || "Oferta"}</div>
+                  <div className="text-sm font-medium">{offer?.title || "Oferta"}</div>
                   <div className="text-xs text-zinc-400">Creator: {inq.creator_id}</div>
                   {location && <div className="text-xs text-zinc-400">{location}</div>}
                 </div>
