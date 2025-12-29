@@ -5,6 +5,7 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Avatar from "@/components/ui/Avatar";
+import InfoCallout from "@/components/InfoCallout";
 
 export default async function CreatorOffersPage() {
   const supabase = supabaseServer();
@@ -28,6 +29,14 @@ export default async function CreatorOffersPage() {
         <Link href="/dashboard/creator/offers/new">
           <Button>Nova oferta</Button>
         </Link>
+      </div>
+
+      <div className="mt-4">
+        <InfoCallout
+          title="Publique ofertas claras para receber mais pedidos."
+          description="Ofertas completas ajudam marcas a decidir mais rapido."
+          items={["Inclua entregaveis", "Preco a partir de", "Cidade/UF", "Ative e publique"]}
+        />
       </div>
 
       <div className="mt-4 grid gap-3">

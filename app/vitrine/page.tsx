@@ -6,6 +6,8 @@ import Avatar from "@/components/ui/Avatar";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import Steps from "@/components/Steps";
+import { getCurrentProfile } from "@/lib/auth/getCurrentProfile";
 
 type SearchParams = {
   platform?: string | string[];
@@ -48,6 +50,7 @@ export default async function VitrinePage({
   searchParams: SearchParams;
 }) {
   const supabase = supabaseServer();
+  const { user, profile } = await getCurrentProfile();
 
   const platform = pickParam(searchParams.platform) ?? null;
   const niche = pickParam(searchParams.niche) ?? null;
@@ -165,7 +168,43 @@ export default async function VitrinePage({
           />
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4">
+          <Card>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div className="text-sm font-semibold text-zinc-100">Como usar a vitrine</div>
+                <p className="mt-1 text-sm text-zinc-300">
+                  Em 3 passos voce encontra creators e inicia propostas.
+                </p>
+              </div>
+              {user && profile?.role === "brand" && (
+                <Link href="/dashboard/brand/inquiries">
+                  <Button size="sm" variant="secondary">
+                    Ver pedidos de proposta
+                  </Button>
+                </Link>
+              )}
+              {user && profile?.role === "creator" && (
+                <Link href="/dashboard/creator/offers/new">
+                  <Button size="sm" variant="secondary">
+                    Criar oferta
+                  </Button>
+                </Link>
+              )}
+            </div>
+            <div className="mt-4">
+              <Steps
+                steps={[
+                  "Use filtros para encontrar creators.",
+                  "Abra uma oferta e veja os entregaveis.",
+                  "Clique em Solicitar proposta para iniciar.",
+                ]}
+              />
+            </div>
+          </Card>
+        </div>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {(offers ?? []).map((offer) => {
             const location = [offer.city, offer.state].filter(Boolean).join(" - ");
             const distanceKm = offer.distance_m ? offer.distance_m / 1000 : null;

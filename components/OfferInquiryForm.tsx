@@ -96,6 +96,7 @@ export default function OfferInquiryForm({ offerId }: { offerId: string }) {
         <Button onClick={submit} disabled={loading}>
           {loading ? "Enviando..." : "Solicitar proposta"}
         </Button>
+        <div className="text-xs text-zinc-400">Voce podera acompanhar no painel.</div>
 
         {err && <Toast variant="danger">{err}</Toast>}
         {ok && <Toast variant="success">{ok}</Toast>}

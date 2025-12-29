@@ -1,6 +1,7 @@
 import { supabaseServer } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import InquiryInbox from "@/components/InquiryInbox";
+import InfoCallout from "@/components/InfoCallout";
 
 export default async function CreatorInquiriesPage() {
   const supabase = supabaseServer();
@@ -23,8 +24,16 @@ export default async function CreatorInquiriesPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold">Pedidos recebidos</h1>
+      <h1 className="text-xl font-semibold">Pedidos de proposta</h1>
       <p className="mt-1 text-sm text-zinc-300">Mensagens de marcas interessadas nas suas ofertas.</p>
+
+      <div className="mt-4">
+        <InfoCallout
+          title="Aqui chegam os pedidos de proposta."
+          description="Responda rapido para aumentar conversao."
+          items={["Aceite ou recuse", "Peca detalhes", "Feche e marque como concluido"]}
+        />
+      </div>
 
       <div className="mt-4">
         <InquiryInbox inquiries={normalized} role="creator" />

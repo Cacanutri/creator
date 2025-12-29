@@ -1,6 +1,7 @@
 import { supabaseServer } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import InquiryInbox from "@/components/InquiryInbox";
+import InfoCallout from "@/components/InfoCallout";
 
 export default async function BrandInquiriesPage() {
   const supabase = supabaseServer();
@@ -23,8 +24,16 @@ export default async function BrandInquiriesPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold">Pedidos enviados</h1>
+      <h1 className="text-xl font-semibold">Pedidos de proposta</h1>
       <p className="mt-1 text-sm text-zinc-300">Acompanhe as solicitacoes feitas na vitrine.</p>
+
+      <div className="mt-4">
+        <InfoCallout
+          title="Acompanhe o status das suas solicitacoes."
+          description="Status claros ajudam no acompanhamento das respostas."
+          items={["sent = enviado", "accepted/rejected", "closed = finalizado"]}
+        />
+      </div>
 
       <div className="mt-4">
         <InquiryInbox inquiries={normalized} role="brand" />

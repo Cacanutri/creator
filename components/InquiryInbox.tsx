@@ -80,10 +80,10 @@ export default function InquiryInbox({ inquiries, role }: Props) {
           const statusLabel = isAccepted
             ? "Aceito"
             : isRejected
-            ? "Rejeitado"
+            ? "Recusado"
             : isClosed
-            ? "Fechado"
-            : "Aguardando";
+            ? "Finalizado"
+            : "Enviado";
           const badgeVariant = isAccepted
             ? "success"
             : isRejected
@@ -113,7 +113,7 @@ export default function InquiryInbox({ inquiries, role }: Props) {
 
               <div className="mt-3 grid gap-2 text-sm text-zinc-300">
                 <div>
-                  Budget: {inq.budget ? `R$ ${Number(inq.budget).toFixed(2)}` : "-"}
+                  Orcamento: {inq.budget ? `R$ ${Number(inq.budget).toFixed(2)}` : "-"}
                 </div>
                 {inq.message && <div className="text-sm text-zinc-300">{inq.message}</div>}
                 {inq.created_at && (
@@ -151,9 +151,9 @@ function StatusTimeline({ status }: { status: string }) {
     <div className="flex items-center gap-2 text-xs text-zinc-400">
       <Step active label="Enviado" />
       <span className="h-px w-6 bg-zinc-700/70" />
-      <Step active={isAccepted || isRejected || isClosed} label={isRejected ? "Rejeitado" : "Aceito"} />
+      <Step active={isAccepted || isRejected || isClosed} label={isRejected ? "Recusado" : "Aceito"} />
       <span className="h-px w-6 bg-zinc-700/70" />
-      <Step active={isClosed} label="Fechado" />
+      <Step active={isClosed} label="Finalizado" />
       {isPending && <span className="text-xs text-zinc-500">Aguardando resposta</span>}
     </div>
   );
