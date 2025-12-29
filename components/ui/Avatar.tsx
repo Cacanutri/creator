@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 
 type Props = {
   name?: string | null;
@@ -21,8 +22,8 @@ export default function Avatar({ name, src, size = "md", className }: Props) {
     .map((part) => part[0]?.toUpperCase())
     .join("");
 
-  const classes = [
-    "inline-flex items-center justify-center rounded-full border border-zinc-700 bg-zinc-900/60 font-semibold text-zinc-200",
+  const wrapperClass = [
+    "relative inline-flex items-center justify-center overflow-hidden rounded-full border border-zinc-700 font-semibold text-zinc-200",
     sizeStyles[size],
     className,
   ]
@@ -30,8 +31,18 @@ export default function Avatar({ name, src, size = "md", className }: Props) {
     .join(" ");
 
   if (src) {
-    return <img src={src} alt={name ?? "Avatar"} className={classes} />;
+    return (
+      <div className={wrapperClass}>
+        <Image src={src} alt={name ?? "Avatar"} fill sizes="48px" className="object-cover" />
+      </div>
+    );
   }
 
-  return <div className={classes}>{initials}</div>;
+  return (
+    <div
+      className={`${wrapperClass} bg-gradient-to-br from-zinc-700/80 via-zinc-900/70 to-zinc-800/80`}
+    >
+      {initials}
+    </div>
+  );
 }

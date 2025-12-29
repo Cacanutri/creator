@@ -8,6 +8,7 @@ import Card, { CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import Toast from "@/components/ui/Toast";
+import OfferCoverSection from "@/components/OfferCoverSection";
 
 export type OfferItemDraft = {
   id?: string;
@@ -368,6 +369,22 @@ export default function OfferEditor({ mode, offerId, initialOffer, initialItems 
             Pais
             <Input value={offer.country} onChange={(e) => updateOffer({ country: e.target.value })} />
           </label>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Imagem de capa</CardTitle>
+          <CardDescription>Uma capa clara aumenta a taxa de solicitacao.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {mode === "edit" && offerId ? (
+            <OfferCoverSection offerId={offerId} />
+          ) : (
+            <div className="text-sm text-zinc-300">
+              Apos salvar, voce pode adicionar a capa da oferta.
+            </div>
+          )}
         </CardContent>
       </Card>
 

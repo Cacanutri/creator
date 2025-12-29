@@ -8,6 +8,8 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Steps from "@/components/Steps";
 import { getCurrentProfile } from "@/lib/auth/getCurrentProfile";
+import Image from "next/image";
+import { getPublicUrl } from "@/lib/supabase/storage";
 
 type SearchParams = {
   platform?: string | string[];
@@ -33,10 +35,16 @@ type OfferRow = {
   city?: string | null;
   state?: string | null;
   country?: string | null;
+  cover_path?: string | null;
   lat?: number | null;
   lng?: number | null;
   created_at?: string | null;
   distance_m?: number | null;
+  creator?: {
+    id?: string;
+    display_name?: string | null;
+    avatar_path?: string | null;
+  } | { id?: string; display_name?: string | null; avatar_path?: string | null }[] | null;
 };
 
 function pickParam(value?: string | string[]) {
@@ -93,7 +101,9 @@ export default async function VitrinePage({
   if (!usingRpc) {
     let query = supabase
       .from("creator_offers")
-      .select("id,title,platform,niche,language,price_from,created_at, creator_id, city, state, country")
+      .select(
+        "id,title,platform,niche,language,price_from,created_at, creator_id, city, state, country, cover_path, creator:profiles(id,display_name,avatar_path)"
+      )
       .eq("is_public", true)
       .eq("is_active", true)
       .order("created_at", { ascending: false });
@@ -174,7 +184,8 @@ export default async function VitrinePage({
               <div>
                 <div className="text-sm font-semibold text-zinc-100">Como usar a vitrine</div>
                 <p className="mt-1 text-sm text-zinc-300">
-                  Em 3 passos voce encontra creators e inicia propostas.
+                  Em 3 passos voce encontra creators e inicia propostas. Ofertas com foto recebem
+                  mais cliques.
                 </p>
               </div>
               {user && profile?.role === "brand" && (
@@ -208,17 +219,44 @@ export default async function VitrinePage({
           {(offers ?? []).map((offer) => {
             const location = [offer.city, offer.state].filter(Boolean).join(" - ");
             const distanceKm = offer.distance_m ? offer.distance_m / 1000 : null;
-            const creatorLabel = "Creator";
+            const creator = (Array.isArray(offer.creator) ? offer.creator[0] : offer.creator) as
+              | { display_name?: string | null; avatar_path?: string | null }
+              | null
+              | undefined;
+            const creatorLabel = creator?.display_name ?? "Creator";
+            const avatarUrl = creator?.avatar_path
+              ? getPublicUrl("avatars", creator.avatar_path)
+              : null;
+            const coverUrl = offer.cover_path
+              ? getPublicUrl("offer-covers", offer.cover_path)
+              : null;
 
             return (
               <Card key={offer.id} interactive>
-                <div className="flex items-center gap-3">
-                  <Avatar name={creatorLabel} />
-                  <div>
-                    <div className="text-sm font-semibold text-zinc-100">{creatorLabel}</div>
-                    <div className="text-xs text-zinc-400">Perfil verificado</div>
+                <div className="relative h-40 overflow-hidden rounded-2xl border border-zinc-800/70 bg-zinc-900/40">
+                  {coverUrl ? (
+                    <Image
+                      src={coverUrl}
+                      alt={offer.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-zinc-800/70 via-zinc-900/50 to-zinc-800/30 text-xs text-zinc-400">
+                      <CoverIcon />
+                      Sem capa
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent" />
+                  <div className="absolute bottom-3 left-3 flex items-center gap-3">
+                    <Avatar name={creatorLabel} src={avatarUrl} size="sm" />
+                    <div>
+                      <div className="text-sm font-semibold text-zinc-100">{creatorLabel}</div>
+                      <div className="text-xs text-zinc-300">Perfil verificado</div>
+                    </div>
                   </div>
-                  <Badge variant="verified" className="ml-auto">
+                  <Badge variant="verified" className="absolute right-3 top-3">
                     Verificado
                   </Badge>
                 </div>
@@ -261,5 +299,21 @@ export default async function VitrinePage({
         )}
       </div>
     </main>
+  );
+}
+
+function CoverIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-6 w-6 text-zinc-500"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <circle cx="9" cy="10" r="2" />
+      <path d="M21 16l-5-5-4 4-2-2-5 5" />
+    </svg>
   );
 }

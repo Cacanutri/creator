@@ -7,13 +7,17 @@ import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Card, { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import Separator from "@/components/ui/Separator";
+import Image from "next/image";
+import { getPublicUrl } from "@/lib/supabase/storage";
 
 export default async function OfertaDetalhe({ params }: { params: { id: string } }) {
   const supabase = supabaseServer();
 
   const { data: offer } = await supabase
     .from("creator_offers")
-    .select("id,title,description,platform,niche,language,price_from,city,state,country,is_public,is_active,creator_id")
+    .select(
+      "id,title,description,platform,niche,language,price_from,city,state,country,is_public,is_active,creator_id,cover_path, creator:profiles(id,display_name,avatar_path)"
+    )
     .eq("id", params.id)
     .eq("is_public", true)
     .eq("is_active", true)
@@ -38,6 +42,13 @@ export default async function OfertaDetalhe({ params }: { params: { id: string }
 
   const canRequest = role === "brand" || role === "admin";
   const location = [offer.city, offer.state, offer.country].filter(Boolean).join(" - ");
+  const creator = (Array.isArray(offer.creator) ? offer.creator[0] : offer.creator) as
+    | { display_name?: string | null; avatar_path?: string | null }
+    | null
+    | undefined;
+  const creatorName = creator?.display_name ?? "Creator";
+  const avatarUrl = creator?.avatar_path ? getPublicUrl("avatars", creator.avatar_path) : null;
+  const coverUrl = offer.cover_path ? getPublicUrl("offer-covers", offer.cover_path) : null;
 
   return (
     <main className="min-h-screen bg-transparent text-zinc-50">
@@ -49,15 +60,40 @@ export default async function OfertaDetalhe({ params }: { params: { id: string }
         <div className="mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
           <Card>
             <CardHeader>
-              <div className="flex items-center gap-3">
-                <Avatar name="Creator" />
-                <div>
-                  <div className="text-sm font-semibold text-zinc-100">Creator</div>
-                  <div className="text-xs text-zinc-400">Perfil verificado</div>
+              <div className="relative h-48 overflow-hidden rounded-2xl border border-zinc-800/70 bg-zinc-900/40">
+                {coverUrl ? (
+                  <Image
+                    src={coverUrl}
+                    alt={offer.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 70vw"
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-zinc-800/70 via-zinc-900/50 to-zinc-800/30 text-xs text-zinc-400">
+                    <CoverIcon />
+                    Sem capa
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+                <div className="absolute bottom-4 left-4 flex items-center gap-3">
+                  <Avatar name={creatorName} src={avatarUrl} size="lg" />
+                  <div>
+                    <div className="text-sm font-semibold text-zinc-100">{creatorName}</div>
+                    <div className="text-xs text-zinc-300">Perfil verificado</div>
+                  </div>
                 </div>
-                <Badge variant="verified" className="ml-auto">
+                <Badge variant="verified" className="absolute right-4 top-4">
                   Verificado
                 </Badge>
+              </div>
+
+              <div className="mt-5 flex items-center gap-3">
+                <Avatar name={creatorName} src={avatarUrl} />
+                <div>
+                  <div className="text-sm font-semibold text-zinc-100">{creatorName}</div>
+                  <div className="text-xs text-zinc-400">Criador na plataforma</div>
+                </div>
               </div>
               <CardTitle className="mt-4 text-2xl">{offer.title}</CardTitle>
               {offer.description && <CardDescription>{offer.description}</CardDescription>}
@@ -153,6 +189,22 @@ function PackageIcon() {
       <path d="M3 7l9-4 9 4-9 4z" />
       <path d="M3 7v10l9 4 9-4V7" />
       <path d="M12 11v10" />
+    </svg>
+  );
+}
+
+function CoverIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-6 w-6 text-zinc-500"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+    >
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <circle cx="9" cy="10" r="2" />
+      <path d="M21 16l-5-5-4 4-2-2-5 5" />
     </svg>
   );
 }
