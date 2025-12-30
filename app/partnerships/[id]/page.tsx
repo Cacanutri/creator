@@ -47,12 +47,12 @@ export default async function PartnershipDetailPage({
   const products = Array.isArray(partnership.products) ? partnership.products : [];
 
   return (
-    <main className="min-h-screen bg-transparent text-zinc-50">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-5xl px-4 py-10">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-2xl font-semibold">Parceria</h1>
-            <p className="mt-1 text-sm text-zinc-300">
+            <p className="mt-1 text-sm text-slate-600">
               Esta parceria registra o combinado entre creator e patrocinador: entregaveis, remuneracao e comprovacao.
             </p>
           </div>
@@ -72,15 +72,15 @@ export default async function PartnershipDetailPage({
             </div>
 
             {offerTitle && (
-              <div className="mt-3 text-sm text-zinc-300">Oferta vinculada: {offerTitle}</div>
+              <div className="mt-3 text-sm text-slate-600">Oferta vinculada: {offerTitle}</div>
             )}
 
             <Separator className="my-4" />
 
             <div className="grid gap-3">
               <div>
-                <div className="text-sm font-semibold text-zinc-100">Resumo do combinado</div>
-                <div className="mt-2 text-sm text-zinc-300">
+                <div className="text-sm font-semibold text-slate-900">Resumo do combinado</div>
+                <div className="mt-2 text-sm text-slate-600">
                   {partnership.compensation_model === "COMMISSION" && (
                     <div>Comissao: {partnership.commission_rate ?? "-"}%</div>
                   )}
@@ -98,8 +98,8 @@ export default async function PartnershipDetailPage({
 
               {products.length > 0 && (
                 <div>
-                  <div className="text-sm font-semibold text-zinc-100">Produtos</div>
-                  <ul className="mt-2 grid gap-1 text-sm text-zinc-300">
+                  <div className="text-sm font-semibold text-slate-900">Produtos</div>
+                  <ul className="mt-2 grid gap-1 text-sm text-slate-600">
                     {products.map((p) => (
                       <li key={p}>{p}</li>
                     ))}
@@ -108,8 +108,8 @@ export default async function PartnershipDetailPage({
               )}
 
               <div>
-                <div className="text-sm font-semibold text-zinc-100">Entregaveis</div>
-                <ul className="mt-2 grid gap-1 text-sm text-zinc-300">
+                <div className="text-sm font-semibold text-slate-900">Entregaveis</div>
+                <ul className="mt-2 grid gap-1 text-sm text-slate-600">
                   {deliverables.length > 0 ? (
                     deliverables.map((item) => <li key={item}>{item}</li>)
                   ) : (
@@ -118,15 +118,15 @@ export default async function PartnershipDetailPage({
                 </ul>
               </div>
 
-              <div className="grid gap-2 text-sm text-zinc-300">
+              <div className="grid gap-2 text-sm text-slate-600">
                 {partnership.content_rules && (
                   <div>
-                    <span className="text-zinc-400">Regras:</span> {partnership.content_rules}
+                    <span className="text-slate-500">Regras:</span> {partnership.content_rules}
                   </div>
                 )}
                 {partnership.proof_required && (
                   <div>
-                    <span className="text-zinc-400">Comprovacao:</span> {partnership.proof_required}
+                    <span className="text-slate-500">Comprovacao:</span> {partnership.proof_required}
                   </div>
                 )}
               </div>
@@ -135,8 +135,8 @@ export default async function PartnershipDetailPage({
 
           <div className="grid gap-4">
             <Card>
-              <div className="text-sm font-semibold text-zinc-100">Linha do tempo</div>
-              <div className="mt-2 text-xs text-zinc-400">
+              <div className="text-sm font-semibold text-slate-900">Linha do tempo</div>
+              <div className="mt-2 text-xs text-slate-500">
                 Enviado → Aceito → Ativo → Entregue → Finalizado
               </div>
               <div className="mt-4">
@@ -145,7 +145,7 @@ export default async function PartnershipDetailPage({
             </Card>
 
             <Card>
-              <div className="text-sm font-semibold text-zinc-100">Provas</div>
+              <div className="text-sm font-semibold text-slate-900">Provas</div>
               <div className="mt-3">
                 <PartnershipProofs partnershipId={partnership.id} />
               </div>

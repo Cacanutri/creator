@@ -6,7 +6,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
 
 export function Card({ className, interactive, ...props }: Props) {
   const classes = [
-    "rounded-2xl border border-zinc-800/80 bg-zinc-900/40 p-4 shadow-sm backdrop-blur",
+    "rounded-2xl border border-slate-200 bg-white p-4 shadow-sm",
     interactive ? "transition hover:-translate-y-0.5 hover:shadow-xl" : "",
     className,
   ]
@@ -22,13 +22,13 @@ export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDiv
 
 export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className={["text-base font-semibold text-zinc-100", className].filter(Boolean).join(" ")} {...props} />
+    <h3 className={["text-base font-semibold text-slate-900", className].filter(Boolean).join(" ")} {...props} />
   );
 }
 
 export function CardDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
-    <p className={["text-sm text-zinc-400", className].filter(Boolean).join(" ")} {...props} />
+    <p className={["text-sm text-slate-600", className].filter(Boolean).join(" ")} {...props} />
   );
 }
 

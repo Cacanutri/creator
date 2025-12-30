@@ -74,7 +74,7 @@ export default function OfferInquiryForm({ offerId }: { offerId: string }) {
   return (
     <Card className="mt-4">
       <div className="grid gap-3">
-        <label className="grid gap-1 text-xs text-zinc-400">
+        <label className="grid gap-1 text-xs text-slate-600">
           Budget (opcional)
           <Input
             placeholder="Ex.: 1500"
@@ -83,7 +83,7 @@ export default function OfferInquiryForm({ offerId }: { offerId: string }) {
           />
           {budgetError && <span className="text-xs text-red-300">{budgetError}</span>}
         </label>
-        <label className="grid gap-1 text-xs text-zinc-400">
+        <label className="grid gap-1 text-xs text-slate-600">
           Mensagem (opcional)
           <Textarea
             rows={4}
@@ -96,7 +96,7 @@ export default function OfferInquiryForm({ offerId }: { offerId: string }) {
         <Button onClick={submit} disabled={loading}>
           {loading ? "Enviando..." : "Solicitar proposta"}
         </Button>
-        <div className="text-xs text-zinc-400">Voce podera acompanhar no painel.</div>
+        <div className="text-xs text-slate-500">Voce podera acompanhar no painel.</div>
 
         {err && <Toast variant="danger">{err}</Toast>}
         {ok && <Toast variant="success">{ok}</Toast>}

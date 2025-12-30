@@ -51,16 +51,16 @@ export default async function OfertaDetalhe({ params }: { params: { id: string }
   const coverUrl = offer.cover_path ? getPublicUrl("offer-covers", offer.cover_path) : null;
 
   return (
-    <main className="min-h-screen bg-transparent text-zinc-50">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-5xl px-4 py-10">
-        <Link href="/vitrine" className="text-sm text-zinc-300 hover:text-zinc-100">
+        <Link href="/vitrine" className="text-sm text-slate-600 hover:text-slate-900">
           {"<-"} Voltar para vitrine
         </Link>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
           <Card>
             <CardHeader>
-              <div className="relative h-48 overflow-hidden rounded-2xl border border-zinc-800/70 bg-zinc-900/40">
+              <div className="relative h-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
                 {coverUrl ? (
                   <Image
                     src={coverUrl}
@@ -70,17 +70,17 @@ export default async function OfertaDetalhe({ params }: { params: { id: string }
                     className="object-cover"
                   />
                 ) : (
-                  <div className="flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-zinc-800/70 via-zinc-900/50 to-zinc-800/30 text-xs text-zinc-400">
+                  <div className="flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-cyan-50 via-slate-50 to-pink-50 text-xs text-slate-500">
                     <CoverIcon />
                     Sem capa
                   </div>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/25 via-slate-900/10 to-transparent" />
                 <div className="absolute bottom-4 left-4 flex items-center gap-3">
                   <Avatar name={creatorName} src={avatarUrl} size="lg" />
                   <div>
-                    <div className="text-sm font-semibold text-zinc-100">{creatorName}</div>
-                    <div className="text-xs text-zinc-300">Perfil verificado</div>
+                    <div className="text-sm font-semibold text-white">{creatorName}</div>
+                    <div className="text-xs text-white/80">Perfil verificado</div>
                   </div>
                 </div>
                 <Badge variant="verified" className="absolute right-4 top-4">
@@ -91,8 +91,8 @@ export default async function OfertaDetalhe({ params }: { params: { id: string }
               <div className="mt-5 flex items-center gap-3">
                 <Avatar name={creatorName} src={avatarUrl} />
                 <div>
-                  <div className="text-sm font-semibold text-zinc-100">{creatorName}</div>
-                  <div className="text-xs text-zinc-400">Criador na plataforma</div>
+                  <div className="text-sm font-semibold text-slate-900">{creatorName}</div>
+                  <div className="text-xs text-slate-500">Criador na plataforma</div>
                 </div>
               </div>
               <CardTitle className="mt-4 text-2xl">{offer.title}</CardTitle>
@@ -106,34 +106,34 @@ export default async function OfertaDetalhe({ params }: { params: { id: string }
               </div>
 
               {location && (
-                <div className="text-sm text-zinc-300">
-                  <span className="text-zinc-400">Localizacao:</span> {location}
+                <div className="text-sm text-slate-600">
+                  <span className="text-slate-500">Localizacao:</span> {location}
                 </div>
               )}
 
-              <div className="text-sm text-zinc-200">
+              <div className="text-sm text-slate-700">
                 Preco base: {offer.price_from ? `R$ ${Number(offer.price_from).toFixed(2)}` : "sob consulta"}
               </div>
 
               <Separator />
 
               <div>
-                <div className="text-sm font-semibold text-zinc-100">O que esta incluso</div>
+                <div className="text-sm font-semibold text-slate-900">O que esta incluso</div>
                 <div className="mt-3 grid gap-2">
                   {(items ?? []).map((item) => (
-                    <div key={item.id} className="rounded-xl border border-zinc-800/70 bg-zinc-900/30 p-3">
+                    <div key={item.id} className="rounded-xl border border-slate-200 bg-white p-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <PackageIcon />
                           <span className="font-medium">{item.type}</span>
                         </div>
-                        <div className="text-xs text-zinc-400">Qtd: {item.quantity}</div>
+                        <div className="text-xs text-slate-500">Qtd: {item.quantity}</div>
                       </div>
-                      <div className="mt-2 text-sm text-zinc-300">{item.requirement}</div>
+                      <div className="mt-2 text-sm text-slate-600">{item.requirement}</div>
                     </div>
                   ))}
                   {(!items || items.length === 0) && (
-                    <div className="text-sm text-zinc-300">Nenhum item cadastrado.</div>
+                    <div className="text-sm text-slate-600">Nenhum item cadastrado.</div>
                   )}
                 </div>
               </div>
@@ -142,8 +142,8 @@ export default async function OfertaDetalhe({ params }: { params: { id: string }
 
           <div className="grid gap-4">
             <div>
-              <div className="mb-2 text-sm font-semibold text-zinc-100">Solicitar proposta</div>
-              <p className="text-xs text-zinc-400">
+              <div className="mb-2 text-sm font-semibold text-slate-900">Solicitar proposta</div>
+              <p className="text-xs text-slate-500">
                 Voce envia um pedido, o creator responde no painel.
               </p>
               {!user && (
@@ -155,7 +155,7 @@ export default async function OfertaDetalhe({ params }: { params: { id: string }
               )}
               {user && canRequest && <OfferInquiryForm offerId={offer.id} />}
               {user && !canRequest && (
-                <div className="mt-3 text-sm text-zinc-300">
+                <div className="mt-3 text-sm text-slate-600">
                   Apenas contas de marca podem solicitar propostas.
                 </div>
               )}
@@ -166,7 +166,7 @@ export default async function OfertaDetalhe({ params }: { params: { id: string }
                 <CardTitle>Confianca</CardTitle>
                 <CardDescription>Sem spam: voce controla o que publica.</CardDescription>
               </CardHeader>
-              <CardContent className="text-sm text-zinc-300">
+              <CardContent className="text-sm text-slate-600">
                 Propostas ficam registradas no painel. Ajustes e negociacoes acontecem com seguranca.
               </CardContent>
             </Card>
@@ -181,7 +181,7 @@ function PackageIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-4 w-4 text-zinc-400"
+      className="h-4 w-4 text-slate-500"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.6"
@@ -197,7 +197,7 @@ function CoverIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-6 w-6 text-zinc-500"
+      className="h-6 w-6 text-slate-500"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.6"

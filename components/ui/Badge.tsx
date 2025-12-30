@@ -15,14 +15,14 @@ type Props = React.HTMLAttributes<HTMLSpanElement> & {
 };
 
 const variantStyles: Record<Variant, string> = {
-  default: "border-zinc-700/80 bg-zinc-900/40 text-zinc-200",
-  platform: "border-blue-500/40 bg-blue-500/10 text-blue-200",
-  niche: "border-emerald-500/40 bg-emerald-500/10 text-emerald-200",
-  status: "border-zinc-600/60 bg-zinc-800/60 text-zinc-200",
-  success: "border-emerald-400/40 bg-emerald-500/10 text-emerald-200",
-  danger: "border-red-400/40 bg-red-500/10 text-red-200",
-  muted: "border-zinc-700/60 bg-zinc-800/40 text-zinc-400",
-  verified: "border-sky-400/40 bg-sky-500/10 text-sky-200",
+  default: "border-slate-200 bg-slate-100 text-slate-700",
+  platform: "border-cyan-200 bg-cyan-50 text-cyan-700",
+  niche: "border-pink-200 bg-pink-50 text-pink-700",
+  status: "border-slate-200 bg-white text-slate-700",
+  success: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  danger: "border-red-200 bg-red-50 text-red-700",
+  muted: "border-slate-200 bg-slate-50 text-slate-500",
+  verified: "border-sky-200 bg-sky-50 text-sky-700",
 };
 
 export default function Badge({ className, variant = "default", ...props }: Props) {

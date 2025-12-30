@@ -149,16 +149,16 @@ export default async function VitrinePage({
   }
 
   return (
-    <main className="min-h-screen bg-transparent text-zinc-50">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-7xl px-4 py-10">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="text-2xl font-semibold">Vitrine de ofertas</h1>
-            <p className="mt-2 text-sm text-zinc-300">
+            <p className="mt-2 text-sm text-slate-600">
               Encontre creators com filtros inteligentes e envie propostas com seguranca.
             </p>
           </div>
-          <div className="text-sm text-zinc-400">
+          <div className="text-sm text-slate-500">
             {offers ? `${offers.length} resultados` : "Carregando..."}
           </div>
         </div>
@@ -182,8 +182,8 @@ export default async function VitrinePage({
           <Card>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <div className="text-sm font-semibold text-zinc-100">Como usar a vitrine</div>
-                <p className="mt-1 text-sm text-zinc-300">
+                <div className="text-sm font-semibold text-slate-900">Como usar a vitrine</div>
+                <p className="mt-1 text-sm text-slate-600">
                   Em 3 passos voce encontra creators e inicia propostas. Ofertas com foto recebem
                   mais cliques.
                 </p>
@@ -233,7 +233,7 @@ export default async function VitrinePage({
 
             return (
               <Card key={offer.id} interactive>
-                <div className="relative h-40 overflow-hidden rounded-2xl border border-zinc-800/70 bg-zinc-900/40">
+                <div className="relative h-40 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
                   {coverUrl ? (
                     <Image
                       src={coverUrl}
@@ -243,17 +243,17 @@ export default async function VitrinePage({
                       className="object-cover"
                     />
                   ) : (
-                    <div className="flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-zinc-800/70 via-zinc-900/50 to-zinc-800/30 text-xs text-zinc-400">
+                    <div className="flex h-full flex-col items-center justify-center gap-2 bg-gradient-to-br from-cyan-50 via-slate-50 to-pink-50 text-xs text-slate-500">
                       <CoverIcon />
                       Sem capa
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/25 via-slate-900/5 to-transparent" />
                   <div className="absolute bottom-3 left-3 flex items-center gap-3">
                     <Avatar name={creatorLabel} src={avatarUrl} size="sm" />
                     <div>
-                      <div className="text-sm font-semibold text-zinc-100">{creatorLabel}</div>
-                      <div className="text-xs text-zinc-300">Perfil verificado</div>
+                      <div className="text-sm font-semibold text-white">{creatorLabel}</div>
+                      <div className="text-xs text-white/80">Perfil verificado</div>
                     </div>
                   </div>
                   <Badge variant="verified" className="absolute right-3 top-3">
@@ -266,13 +266,13 @@ export default async function VitrinePage({
                   <Badge variant="platform">{offer.platform || "Platform"}</Badge>
                   <Badge variant="niche">{offer.niche || "Nicho"}</Badge>
                 </div>
-                {location && <div className="mt-2 text-xs text-zinc-400">{location}</div>}
+                {location && <div className="mt-2 text-xs text-slate-500">{location}</div>}
                 {distanceKm !== null && (
-                  <div className="mt-1 text-xs text-zinc-300">
+                  <div className="mt-1 text-xs text-slate-500">
                     Distancia: {distanceKm.toFixed(1)} km
                   </div>
                 )}
-                <div className="mt-3 text-sm text-zinc-200">
+                <div className="mt-3 text-sm text-slate-700">
                   A partir de {offer.price_from ? `R$ ${Number(offer.price_from).toFixed(2)}` : "sob consulta"}
                 </div>
                 <div className="mt-4">
@@ -287,7 +287,7 @@ export default async function VitrinePage({
 
         {offers && offers.length === 0 && (
           <Card className="mt-8 text-center">
-            <div className="text-sm text-zinc-300">Nenhuma oferta encontrada com esses filtros.</div>
+            <div className="text-sm text-slate-600">Nenhuma oferta encontrada com esses filtros.</div>
             <div className="mt-4">
               <Link href="/vitrine">
                 <Button variant="secondary" size="sm">
@@ -306,7 +306,7 @@ function CoverIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-6 w-6 text-zinc-500"
+      className="h-6 w-6 text-slate-500"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.6"

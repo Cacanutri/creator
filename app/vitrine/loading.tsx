@@ -3,7 +3,7 @@ import Skeleton from "@/components/ui/Skeleton";
 
 export default function VitrineLoading() {
   return (
-    <main className="min-h-screen bg-transparent text-zinc-50">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-7xl px-4 py-10">
         <div className="grid gap-6">
           <Card>

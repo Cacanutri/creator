@@ -23,7 +23,7 @@ export default function Avatar({ name, src, size = "md", className }: Props) {
     .join("");
 
   const wrapperClass = [
-    "relative inline-flex items-center justify-center overflow-hidden rounded-full border border-zinc-700 font-semibold text-zinc-200",
+    "relative inline-flex items-center justify-center overflow-hidden rounded-full border border-slate-200 font-semibold text-slate-700",
     sizeStyles[size],
     className,
   ]
@@ -39,9 +39,7 @@ export default function Avatar({ name, src, size = "md", className }: Props) {
   }
 
   return (
-    <div
-      className={`${wrapperClass} bg-gradient-to-br from-zinc-700/80 via-zinc-900/70 to-zinc-800/80`}
-    >
+    <div className={`${wrapperClass} bg-gradient-to-br from-cyan-100 via-white to-pink-100`}>
       {initials}
     </div>
   );

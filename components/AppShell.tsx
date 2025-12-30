@@ -11,6 +11,7 @@ import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
 import Skeleton from "@/components/ui/Skeleton";
 import { getPublicUrl } from "@/lib/supabase/storage";
+import Image from "next/image";
 
 type Props = {
   userEmail: string | null;
@@ -78,16 +79,20 @@ export default function AppShell({ userEmail, role, children }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-zinc-50">
-      <header className="fixed top-0 z-50 w-full border-b border-zinc-800/80 bg-zinc-950/70 backdrop-blur">
+    <div className="min-h-screen bg-[var(--bg)] text-slate-900">
+      <header className="fixed top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
           <Link href="/dashboard" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-800 bg-zinc-900/60 text-sm font-semibold">
-              CA
-            </div>
+            <Image
+              src="/brand/icon.svg"
+              alt="CreatorHub"
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-2xl border border-slate-200 bg-white p-1"
+            />
             <div>
-              <div className="text-sm font-semibold text-zinc-100">CreatorAds Hub</div>
-              <div className="text-xs text-zinc-400">Creators & Patrocinadores</div>
+              <div className="text-sm font-semibold text-slate-900">CreatorHub</div>
+              <div className="text-xs text-slate-500">Creators e Patrocinadores</div>
             </div>
           </Link>
 
@@ -100,9 +105,9 @@ export default function AppShell({ userEmail, role, children }: Props) {
               name={displayName ?? userEmail ?? role}
               src={avatarPath ? getPublicUrl("avatars", avatarPath) : null}
             />
-            <div className="hidden sm:flex flex-col text-xs text-zinc-400">
+            <div className="hidden sm:flex flex-col text-xs text-slate-500">
               {displayName || userEmail ? (
-                <span className="text-zinc-200">{displayName ?? userEmail}</span>
+                <span className="text-slate-800">{displayName ?? userEmail}</span>
               ) : (
                 <Skeleton className="h-3 w-32" />
               )}
@@ -113,6 +118,7 @@ export default function AppShell({ userEmail, role, children }: Props) {
             </Button>
           </div>
         </div>
+        <div className="h-1 w-full bg-gradient-to-r from-[#25F4EE] via-[#FE2C55] to-[#FF0033] opacity-60" />
       </header>
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 pb-24 pt-24 md:grid-cols-[240px_1fr] md:pb-10">
@@ -123,7 +129,7 @@ export default function AppShell({ userEmail, role, children }: Props) {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="group flex items-center gap-3 rounded-xl border border-transparent px-3 py-2 text-sm text-zinc-200 transition hover:border-zinc-800/80 hover:bg-zinc-900/50"
+                  className="group flex items-center gap-3 rounded-xl border border-transparent px-3 py-2 text-sm text-slate-700 transition hover:border-slate-200 hover:bg-slate-100"
                 >
                   <NavIcon name={l.icon} />
                   <span>{l.label}</span>
@@ -133,18 +139,18 @@ export default function AppShell({ userEmail, role, children }: Props) {
           </Card>
         </aside>
 
-        <main className="rounded-2xl border border-zinc-800/70 bg-zinc-900/20 p-4 md:p-6">
+        <main className="rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-sm md:p-6">
           {children}
         </main>
       </div>
 
-      <nav className="fixed bottom-3 left-0 right-0 z-40 mx-auto w-[92%] max-w-md rounded-2xl border border-zinc-800/80 bg-zinc-950/80 px-4 py-2 backdrop-blur md:hidden">
+      <nav className="fixed bottom-3 left-0 right-0 z-40 mx-auto w-[92%] max-w-md rounded-2xl border border-slate-200 bg-white/90 px-4 py-2 shadow-md backdrop-blur md:hidden">
         <div className="grid grid-cols-4 gap-2 text-xs">
           {mobileLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="flex flex-col items-center gap-1 rounded-xl px-2 py-1 text-zinc-300 hover:bg-zinc-900/60"
+              className="flex flex-col items-center gap-1 rounded-xl px-2 py-1 text-slate-600 hover:bg-slate-100"
             >
               <NavIcon name={link.icon} />
               <span className="text-[10px]">{link.label}</span>
@@ -157,7 +163,7 @@ export default function AppShell({ userEmail, role, children }: Props) {
 }
 
 function NavIcon({ name }: { name?: string }) {
-  const base = "h-4 w-4 text-zinc-400";
+  const base = "h-4 w-4 text-slate-500";
   if (name === "grid") {
     return (
       <svg viewBox="0 0 24 24" className={base} fill="none" stroke="currentColor" strokeWidth="1.6">

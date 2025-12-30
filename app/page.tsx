@@ -6,14 +6,14 @@ import Steps from "@/components/Steps";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-transparent text-zinc-50">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-6xl px-4 py-14">
         <Card className="p-6 md:p-10">
           <Badge variant="verified">Plataforma oficial</Badge>
           <h1 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">
             Conecte Criadores e Patrocinadores em parcerias sob medida.
           </h1>
-          <p className="mt-3 max-w-2xl text-sm text-zinc-300">
+          <p className="mt-3 max-w-2xl text-sm text-slate-600">
             Criadores publicam ofertas. Marcas filtram, solicitam proposta e negociam direto no painel.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -28,7 +28,7 @@ export default function Home() {
 
         <div className="mt-10 grid gap-4 lg:grid-cols-2">
           <Card>
-            <div className="text-sm font-semibold text-zinc-100">Como funciona para Criadores</div>
+            <div className="text-sm font-semibold text-slate-900">Como funciona para Criadores</div>
             <div className="mt-4">
               <Steps
                 steps={[
@@ -40,7 +40,7 @@ export default function Home() {
             </div>
           </Card>
           <Card>
-            <div className="text-sm font-semibold text-zinc-100">Como funciona para Patrocinadores</div>
+            <div className="text-sm font-semibold text-slate-900">Como funciona para Patrocinadores</div>
             <div className="mt-4">
               <Steps
                 steps={[
@@ -55,8 +55,8 @@ export default function Home() {
 
         <div className="mt-10 grid gap-4 lg:grid-cols-[2fr_1fr]">
           <Card>
-            <div className="text-sm font-semibold text-zinc-100">O que voce encontra na Vitrine</div>
-            <ul className="mt-4 grid gap-2 text-sm text-zinc-300">
+            <div className="text-sm font-semibold text-slate-900">O que voce encontra na Vitrine</div>
+            <ul className="mt-4 grid gap-2 text-sm text-slate-600">
               <li className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
                 Ofertas por plataforma (YouTube, TikTok, Instagram).
@@ -76,8 +76,8 @@ export default function Home() {
             </ul>
           </Card>
           <Card>
-            <div className="text-sm font-semibold text-zinc-100">Seguranca e transparencia</div>
-            <ul className="mt-4 grid gap-2 text-sm text-zinc-300">
+            <div className="text-sm font-semibold text-slate-900">Seguranca e transparencia</div>
+            <ul className="mt-4 grid gap-2 text-sm text-slate-600">
               <li className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 Historico de propostas no painel.
@@ -96,7 +96,7 @@ export default function Home() {
 
         <div className="mt-10 grid gap-4 lg:grid-cols-[1fr_2fr]">
           <Card>
-            <div className="text-sm font-semibold text-zinc-100">Onde clicar</div>
+            <div className="text-sm font-semibold text-slate-900">Onde clicar</div>
             <div className="mt-4 grid gap-2">
               <Link href="/vitrine">
                 <Button size="sm">Vitrine</Button>
@@ -119,8 +119,8 @@ export default function Home() {
             </div>
           </Card>
           <Card>
-            <div className="text-sm font-semibold text-zinc-100">Proximos passos</div>
-            <p className="mt-2 text-sm text-zinc-300">
+            <div className="text-sm font-semibold text-slate-900">Proximos passos</div>
+            <p className="mt-2 text-sm text-slate-600">
               Se voce e creator, crie sua oferta e publique na vitrine. Se voce e marca, explore
               ofertas e solicite propostas para iniciar a conversa.
             </p>
@@ -128,15 +128,15 @@ export default function Home() {
         </div>
 
         <div className="mt-10">
-          <div className="text-sm font-semibold text-zinc-100">FAQ rapido</div>
+          <div className="text-sm font-semibold text-slate-900">FAQ rapido</div>
           <div className="mt-4 grid gap-3">
             {faqItems.map((item) => (
               <Card key={item.q} className="p-0">
                 <details className="group p-4">
-                  <summary className="cursor-pointer list-none text-sm font-semibold text-zinc-100">
+                  <summary className="cursor-pointer list-none text-sm font-semibold text-slate-900">
                     {item.q}
                   </summary>
-                  <p className="mt-2 text-sm text-zinc-300">{item.a}</p>
+                  <p className="mt-2 text-sm text-slate-600">{item.a}</p>
                 </details>
               </Card>
             ))}
@@ -145,7 +145,7 @@ export default function Home() {
 
         <Card className="mt-10 p-6 text-center">
           <h2 className="text-xl font-semibold">Comecar agora</h2>
-          <p className="mt-2 text-sm text-zinc-300">
+          <p className="mt-2 text-sm text-slate-600">
             Escolha seu caminho e avance com seguranca.
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-3">

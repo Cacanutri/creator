@@ -211,8 +211,8 @@ export default function VitrineFilters({
     <Card>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-sm font-semibold text-zinc-200">Filtros</h2>
-          <p className="text-xs text-zinc-400">
+          <h2 className="text-sm font-semibold text-slate-900">Filtros</h2>
+          <p className="text-xs text-slate-500">
             Use cidades, raio e outros filtros para achar creators.
           </p>
         </div>
@@ -230,7 +230,7 @@ export default function VitrineFilters({
       </div>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <label className="grid gap-1 text-xs text-zinc-400">
+        <label className="grid gap-1 text-xs text-slate-600">
           Platform
           <Select value={platformValue} onChange={(e) => setPlatformValue(e.target.value)}>
             {normalizedPlatformOptions.map((option) => (
@@ -240,22 +240,22 @@ export default function VitrineFilters({
             ))}
           </Select>
         </label>
-        <label className="grid gap-1 text-xs text-zinc-400">
+        <label className="grid gap-1 text-xs text-slate-600">
           Nicho
           <Input value={nicheValue} onChange={(e) => setNicheValue(e.target.value)} />
         </label>
-        <label className="grid gap-1 text-xs text-zinc-400">
+        <label className="grid gap-1 text-xs text-slate-600">
           Preco maximo
           <Input value={maxPriceValue} onChange={(e) => setMaxPriceValue(e.target.value)} />
         </label>
-        <label className="grid gap-1 text-xs text-zinc-400">
+        <label className="grid gap-1 text-xs text-slate-600">
           Pais
           <Select value={countryValue} onChange={(e) => setCountryValue(e.target.value)}>
             <option value="BR">BR</option>
             <option value="ALL">Todos</option>
           </Select>
         </label>
-        <label className="grid gap-1 text-xs text-zinc-400">
+        <label className="grid gap-1 text-xs text-slate-600">
           Estado/UF
           <Input
             value={stateValue}
@@ -263,11 +263,11 @@ export default function VitrineFilters({
             maxLength={2}
           />
         </label>
-        <label className="grid gap-1 text-xs text-zinc-400">
+        <label className="grid gap-1 text-xs text-slate-600">
           Cidades (ex.: Maceio, Recife)
           <Input value={citiesValue} onChange={(e) => setCitiesValue(e.target.value)} />
         </label>
-        <label className="grid gap-1 text-xs text-zinc-400">
+        <label className="grid gap-1 text-xs text-slate-600">
           Raio (km)
           <Input
             type="number"
@@ -276,7 +276,7 @@ export default function VitrineFilters({
             onChange={(e) => setRadiusValue(e.target.value)}
           />
         </label>
-        <label className="grid gap-1 text-xs text-zinc-400">
+        <label className="grid gap-1 text-xs text-slate-600">
           Cidade para raio (ex.: Maceio - AL)
           <Input value={cityRadiusValue} onChange={(e) => setCityRadiusValue(e.target.value)} />
         </label>

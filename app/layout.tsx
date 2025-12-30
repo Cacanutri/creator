@@ -1,14 +1,17 @@
 ﻿import "./globals.css";
 
 export const metadata = {
-  title: "CreatorAds Hub",
-  description: "MVP de parcerias entre creators e marcas",
+  title: "CreatorHub",
+  description: "Plataforma de parcerias entre creators e patrocinadores",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-br">
-      <body className="bg-transparent text-zinc-50">{children}</body>
+      <body className="bg-transparent text-slate-900 antialiased">{children}</body>
     </html>
   );
 }

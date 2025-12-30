@@ -14,10 +14,10 @@ export default function InfoCallout({ title, description, items }: Props) {
           <InfoIcon />
         </div>
         <div>
-          <div className="text-sm font-semibold text-zinc-100">{title}</div>
-          <p className="mt-1 text-sm text-zinc-300">{description}</p>
+          <div className="text-sm font-semibold text-slate-900">{title}</div>
+          <p className="mt-1 text-sm text-slate-600">{description}</p>
           {items && items.length > 0 && (
-            <ul className="mt-3 grid gap-1 text-sm text-zinc-300">
+            <ul className="mt-3 grid gap-1 text-sm text-slate-600">
               {items.map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />

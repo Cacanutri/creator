@@ -27,19 +27,19 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-50">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-md px-4 py-14">
         <h1 className="text-2xl font-semibold">Criar conta</h1>
 
         <form onSubmit={onSubmit} className="mt-6 grid gap-3">
           <input
-            className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-900 outline-none focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/30"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-900 outline-none focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/30"
             placeholder="Senha"
             type="password"
             value={password}
@@ -50,15 +50,15 @@ export default function RegisterPage() {
 
           <button
             disabled={loading}
-            className="mt-2 rounded-lg bg-zinc-100 px-4 py-2 font-medium text-zinc-900 hover:bg-white disabled:opacity-60"
+            className="mt-2 rounded-lg bg-gradient-to-r from-[#25F4EE] via-[#FE2C55] to-[#FF0033] px-4 py-2 font-medium text-white hover:opacity-90 disabled:opacity-60"
           >
             {loading ? "Criando..." : "Cadastrar"}
           </button>
         </form>
 
-        <p className="mt-4 text-sm text-zinc-300">
+        <p className="mt-4 text-sm text-slate-600">
           Já tem conta?{" "}
-          <a className="text-zinc-100 underline" href="/login">
+          <a className="text-slate-900 underline" href="/login">
             Entrar
           </a>
         </p>

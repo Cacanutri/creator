@@ -63,20 +63,20 @@ export default function OnboardingPage() {
     router.refresh();
   }
 
-  if (loading) return <main className="min-h-screen bg-zinc-950 text-zinc-50 p-6">Carregando...</main>;
+  if (loading) return <main className="min-h-screen bg-slate-50 text-slate-900 p-6">Carregando...</main>;
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-50">
+    <main className="min-h-screen bg-slate-50 text-slate-900">
       <div className="mx-auto max-w-xl px-4 py-14">
         <h1 className="text-2xl font-semibold">Onboarding</h1>
-        <p className="mt-2 text-zinc-300">
+        <p className="mt-2 text-slate-600">
           Escolha o tipo de conta para liberar o painel correto.
         </p>
 
         <div className="mt-6 grid gap-3">
-          <label className="text-sm text-zinc-300">Nome (opcional)</label>
+          <label className="text-sm text-slate-600">Nome (opcional)</label>
           <input
-            className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-900 outline-none focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/30"
             placeholder="Ex.: Marcel Malta"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
@@ -88,18 +88,18 @@ export default function OnboardingPage() {
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <button
             onClick={() => choose("creator")}
-            className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4 text-left hover:bg-zinc-900/50"
+            className="rounded-xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
           >
             <div className="font-semibold">Sou Creator</div>
-            <div className="mt-1 text-sm text-zinc-300">Envia propostas e entrega parcerias.</div>
+            <div className="mt-1 text-sm text-slate-600">Envia propostas e entrega parcerias.</div>
           </button>
 
           <button
             onClick={() => choose("brand")}
-            className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4 text-left hover:bg-zinc-900/50"
+            className="rounded-xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
           >
             <div className="font-semibold">Sou Marca</div>
-            <div className="mt-1 text-sm text-zinc-300">Cria parcerias e aprova entregas.</div>
+            <div className="mt-1 text-sm text-slate-600">Cria parcerias e aprova entregas.</div>
           </button>
         </div>
       </div>

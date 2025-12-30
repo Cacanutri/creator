@@ -6,15 +6,15 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
-    --bg: #0b0d10;
-    --card: rgba(24, 24, 27, 0.4);
-    --border: rgba(39, 39, 42, 0.9);
-    --text: #f4f4f5;
-    --muted: #a1a1aa;
-    --primary: #60a5fa;
-    --success: #34d399;
-    --danger: #f87171;
+    color-scheme: light;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --muted: #475569;
+    --primary: #0ea5e9;
+    --success: #10b981;
+    --danger: #ef4444;
   }
 
   html,
@@ -24,20 +24,20 @@
 
   body {
     background:
-      radial-gradient(1200px 700px at 10% -10%, rgba(56, 189, 248, 0.08), transparent 60%),
-      radial-gradient(900px 500px at 90% -20%, rgba(99, 102, 241, 0.08), transparent 55%),
-      linear-gradient(180deg, #0b0d10 0%, #0a0b0f 70%, #090a0d 100%);
+      radial-gradient(1200px 700px at 10% -10%, rgba(37, 244, 238, 0.12), transparent 60%),
+      radial-gradient(900px 500px at 90% -20%, rgba(254, 44, 85, 0.1), transparent 55%),
+      linear-gradient(180deg, #f8fafc 0%, #f1f5f9 70%, #eaf0f8 100%);
     color: var(--text);
     font-family: "Space Grotesk", "Segoe UI", "Tahoma", sans-serif;
   }
 
   ::selection {
-    background: rgba(96, 165, 250, 0.35);
-    color: #fff;
+    background: rgba(254, 44, 85, 0.2);
+    color: #0f172a;
   }
 
   :focus-visible {
-    outline: 2px solid rgba(96, 165, 250, 0.8);
+    outline: 2px solid rgba(34, 211, 238, 0.6);
     outline-offset: 2px;
   }
 }
@@ -52,14 +52,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(24, 24, 27, 0.6);
+  background: #e2e8f0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(63, 63, 70, 0.7);
+  background: #cbd5e1;
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(82, 82, 91, 0.8);
+  background: #94a3b8;
 }

@@ -7,9 +7,9 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
 };
 
 const variantStyles: Record<Variant, string> = {
-  info: "border-blue-500/30 bg-blue-500/10 text-blue-100",
-  success: "border-emerald-500/30 bg-emerald-500/10 text-emerald-100",
-  danger: "border-red-500/30 bg-red-500/10 text-red-100",
+  info: "border-cyan-200 bg-cyan-50 text-cyan-700",
+  success: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  danger: "border-red-200 bg-red-50 text-red-700",
 };
 
 export default function Toast({ className, variant = "info", ...props }: Props) {
