@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { supabaseBrowser } from "@/lib/supabase/client";
@@ -28,12 +28,12 @@ export default function ProposalActions(props: {
 
     if (existing?.id) {
       setLoading(false);
-      return setErr("Esta campanha já possui um acordo.");
+      return setErr("Esta campanha ja possui um acordo.");
     }
 
     const { error: e1 } = await supabase
       .from("proposals")
-      .update({ status: "accepted" })
+      .update({ status: "won" })
       .eq("id", props.proposalId);
 
     if (e1) {
@@ -54,7 +54,7 @@ export default function ProposalActions(props: {
       creator_id: props.creatorId,
       proposal_id: props.proposalId,
       total_value: props.price,
-      terms: "MVP: termos padrão. Ajuste aqui depois.",
+      terms: "MVP: termos padrao. Ajuste aqui depois.",
       status: "active",
     });
 
@@ -63,7 +63,10 @@ export default function ProposalActions(props: {
       return setErr(e2.message);
     }
 
-    await supabase.from("campaigns").update({ status: "closed" }).eq("id", props.campaignId);
+    await supabase
+      .from("campaigns")
+      .update({ status: "awarded", creator_id: props.creatorId })
+      .eq("id", props.campaignId);
 
     setLoading(false);
     router.refresh();
@@ -86,7 +89,7 @@ export default function ProposalActions(props: {
           disabled={loading}
           className="rounded-lg bg-zinc-100 px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-white disabled:opacity-60"
         >
-          {loading ? "..." : "Aceitar"}
+          {loading ? "..." : "Selecionar"}
         </button>
         <button
           onClick={reject}

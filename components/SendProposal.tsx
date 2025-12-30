@@ -28,7 +28,7 @@ export default function SendProposal({ campaignId }: { campaignId: string }) {
     const p = Number(price.replace(",", "."));
     if (!p || p <= 0) {
       setLoading(false);
-      return setErr("Informe um preço válido.");
+      return setErr("Informe um preco valido.");
     }
 
     const { error } = await supabase.from("proposals").insert({
@@ -54,7 +54,7 @@ export default function SendProposal({ campaignId }: { campaignId: string }) {
       <div className="mt-3 grid gap-3">
         <input
           className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
-          placeholder="Preço (ex.: 1500)"
+          placeholder="Preco (ex.: 1500)"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />

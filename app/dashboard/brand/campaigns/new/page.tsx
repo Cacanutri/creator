@@ -79,7 +79,7 @@ export default function NewCampaign() {
   const [description, setDescription] = useState(PLATFORM_PRESETS.tiktok.description);
   const [budget, setBudget] = useState<string>("");
 
-  const [status, setStatus] = useState<"draft" | "open">("open");
+  const [status, setStatus] = useState<"draft" | "open">("draft");
 
   const [deliverables, setDeliverables] = useState<DeliverableDraft[]>(
     PLATFORM_PRESETS.tiktok.deliverables
@@ -234,7 +234,7 @@ export default function NewCampaign() {
         </div>
       </div>
 
-      <h2 className="mt-8 text-sm font-semibold text-zinc-200">Entregáveis</h2>
+      <h2 className="mt-8 text-sm font-semibold text-zinc-200">Entregaveis</h2>
 
       <div className="mt-3 grid gap-3">
         {deliverables.map((d, i) => (
@@ -283,7 +283,7 @@ export default function NewCampaign() {
             onClick={addDeliverable}
             className="rounded-lg border border-zinc-700 px-3 py-2 text-sm hover:bg-zinc-800/60"
           >
-            + Adicionar entregável
+            + Adicionar entregavel
           </button>
 
           <button

@@ -30,21 +30,25 @@ export default function AppShell({ userEmail, role, children }: Props) {
     role === "brand"
       ? [
           { href: "/dashboard/brand", label: "Painel", icon: "home" },
-          { href: "/vitrine", label: "Vitrine", icon: "grid" },
-          { href: "/dashboard/brand/inquiries", label: "Pedidos de proposta", icon: "inbox" },
-          { href: "/dashboard/brand/partnerships", label: "Parcerias", icon: "flag" },
+          { href: "/dashboard/brand/campaigns", label: "Campanhas", icon: "flag" },
+          { href: "/dashboard/brand/ratings", label: "Avaliacoes", icon: "star" },
+          { href: "/vitrine/campaigns", label: "Vitrine", icon: "grid" },
           { href: "/dashboard/settings", label: "Configuracoes", icon: "settings" },
         ]
       : role === "creator"
       ? [
           { href: "/dashboard/creator", label: "Painel", icon: "home" },
-          { href: "/dashboard/creator/offers", label: "Minhas ofertas", icon: "tag" },
-          { href: "/dashboard/creator/inquiries", label: "Pedidos de proposta", icon: "inbox" },
-          { href: "/dashboard/creator/partnerships", label: "Parcerias", icon: "flag" },
+          { href: "/dashboard/creator/campaigns", label: "Campanhas", icon: "flag" },
+          { href: "/dashboard/creator/ratings", label: "Avaliacoes", icon: "star" },
+          { href: "/vitrine/campaigns", label: "Vitrine", icon: "grid" },
           { href: "/dashboard/settings", label: "Configuracoes", icon: "settings" },
         ]
       : [
           { href: "/dashboard/admin", label: "Admin", icon: "shield" },
+          { href: "/dashboard/admin/campaigns", label: "Campanhas", icon: "flag" },
+          { href: "/dashboard/admin/proposals", label: "Propostas", icon: "inbox" },
+          { href: "/dashboard/admin/ratings", label: "Avaliacoes", icon: "star" },
+          { href: "/dashboard/admin/moderation", label: "Moderacao", icon: "tag" },
           { href: "/dashboard/settings", label: "Configuracoes", icon: "settings" },
         ];
 
@@ -192,6 +196,13 @@ function NavIcon({ name }: { name?: string }) {
       <svg viewBox="0 0 24 24" className={base} fill="none" stroke="currentColor" strokeWidth="1.6">
         <path d="M20 12l-8 8-9-9V4h7z" />
         <circle cx="7.5" cy="7.5" r="1.5" />
+      </svg>
+    );
+  }
+  if (name === "star") {
+    return (
+      <svg viewBox="0 0 24 24" className={base} fill="none" stroke="currentColor" strokeWidth="1.6">
+        <path d="M12 3l2.9 6 6.6.6-5 4.3 1.5 6.5-6-3.4-6 3.4 1.5-6.5-5-4.3 6.6-.6z" />
       </svg>
     );
   }

@@ -1,6 +1,8 @@
 import { supabaseServer } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import ProposalActions from "@/components/ProposalActions";
+import CampaignStatusActions from "@/components/CampaignStatusActions";
+import RatingForm from "@/components/RatingForm";
 
 export default async function BrandCampaignDetail({ params }: { params: { id: string } }) {
   const supabase = supabaseServer();
@@ -35,6 +37,13 @@ export default async function BrandCampaignDetail({ params }: { params: { id: st
     .eq("campaign_id", campaign.id)
     .maybeSingle();
 
+  const { data: myRating } = await supabase
+    .from("ratings")
+    .select("id")
+    .eq("campaign_id", campaign.id)
+    .eq("from_user_id", user.id)
+    .maybeSingle();
+
   return (
     <div>
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -56,7 +65,11 @@ export default async function BrandCampaignDetail({ params }: { params: { id: st
         )}
       </div>
 
-      <h2 className="mt-8 text-sm font-semibold text-zinc-200">Entregáveis</h2>
+      <div className="mt-6">
+        <CampaignStatusActions campaignId={campaign.id} currentStatus={campaign.status} />
+      </div>
+
+      <h2 className="mt-8 text-sm font-semibold text-zinc-200">Entregaveis</h2>
       <div className="mt-3 grid gap-2">
         {(deliverables ?? []).map((d) => (
           <div key={d.id} className="rounded-lg border border-zinc-800 bg-zinc-900/30 p-3">
@@ -68,7 +81,7 @@ export default async function BrandCampaignDetail({ params }: { params: { id: st
           </div>
         ))}
         {(!deliverables || deliverables.length === 0) && (
-          <div className="text-sm text-zinc-300">Sem entregáveis cadastrados.</div>
+          <div className="text-sm text-zinc-300">Sem entregaveis cadastrados.</div>
         )}
       </div>
 
@@ -84,7 +97,7 @@ export default async function BrandCampaignDetail({ params }: { params: { id: st
             </div>
 
             <div className="mt-2 text-sm">
-              <span className="text-zinc-400">Preço:</span>{" "}
+              <span className="text-zinc-400">Preco:</span>{" "}
               <span className="font-medium text-zinc-50">R$ {Number(p.price).toFixed(2)}</span>
             </div>
 
@@ -100,7 +113,7 @@ export default async function BrandCampaignDetail({ params }: { params: { id: st
                   price={Number(p.price)}
                 />
               ) : (
-                <div className="text-xs text-zinc-400">Ação indisponível.</div>
+                <div className="text-xs text-zinc-400">Acao indisponivel.</div>
               )}
             </div>
           </div>
@@ -110,6 +123,22 @@ export default async function BrandCampaignDetail({ params }: { params: { id: st
           <div className="text-sm text-zinc-300">Nenhuma proposta ainda.</div>
         )}
       </div>
+
+      {campaign.status === "closed" && campaign.creator_id && (
+        <div className="mt-8">
+          {myRating ? (
+            <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-3 text-sm text-zinc-300">
+              Avaliacao enviada.
+            </div>
+          ) : (
+            <RatingForm
+              campaignId={campaign.id}
+              toUserId={campaign.creator_id}
+              title="Avaliar creator"
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }
