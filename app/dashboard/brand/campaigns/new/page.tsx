@@ -257,6 +257,7 @@ export default function NewCampaign() {
                 className="rounded-lg border border-zinc-800 bg-zinc-900/40 px-3 py-2 outline-none"
                 placeholder="due_date (opcional) AAAA-MM-DD"
                 value={d.due_date ?? ""}
+                type="date"
                 onChange={(e) => updateDel(i, { due_date: e.target.value })}
               />
             </div>
