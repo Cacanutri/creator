@@ -25,9 +25,14 @@ export default async function BrandHome() {
           </p>
         </div>
 
-        <Link href="/dashboard/brand/partnerships">
-          <Button>Ver parcerias</Button>
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/dashboard/brand/campaigns/new">
+            <Button>Nova oferta</Button>
+          </Link>
+          <Link href="/dashboard/brand/partnerships">
+            <Button variant="secondary">Ver parcerias</Button>
+          </Link>
+        </div>
       </div>
 
       <h2 className="mt-8 text-sm font-semibold text-zinc-200">Ultimas parcerias</h2>
